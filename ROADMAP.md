@@ -1,0 +1,56 @@
+# Project Roadmap 
+
+## Conventions 
+
+I/O
+- Will call file paths `PATH_TO_FILENAME`
+- Will call directory paths `DIRECTORYNAME_DIR`
+- As variables, use the lowercase `path_to_filename` and `directoryname_dir`
+
+Defaults and Constants
+- Will keep all defaults in a `defaults` folder or file? 
+
+
+
+
+## Maintenance
+
+Eppy/Geomeppy Inheritance
+- Decide if using Epbunch from Eppy or Geomeppy? 
+- Similarly decide if using IDF from Eppy or Geomeppy 
+- Think Geomeppy generally has more features.., but Eppy is the base
+- Decision: Will use Eppy unless need Geomeppy
+
+Defaults associated with Minimal_AP.idf
+- Are they what I would like?
+
+Corralling Ep-related functions
+- Have an EZIDF class that has all the functions that need to happen at the idf level, this is what gets passed around.. 
+- Also have EzBunch that makes the object stuff more legible... 
+  - For now implemented as functions, could change this in the future.. 
+
+Make constants with keys that are used 
+- ie Zone, BuildingSuface, etc => should all live in one locations.. folder => keys, then subdetails like "wall.." 
+
+
+
+
+Set location of EnergyPlus Installation + IDD file
+- Either look for this or or make an input to EZCase.. 
+- Making the path to the IDD is good enough, but can't make my local installation a default.. 
+- Maybe have a separate version for testsing, or remember to remove 
+
+
+
+## Future features 
+Logging (with Rich?)
+  - Detailed IDD already set error (+ need to better understand the scope of this IDD set.. )
+
+
+
+## DevEx
+- VSCode shortcut for `from rich import print as rprint` or global import?
+
+
+## Learn more about 
+- Doing errors correctly.. 

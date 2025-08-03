@@ -1,0 +1,15 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+**/.DS_STORE
+
+static/_02_plans/svg2plan_outputs_p1gen/
+static/_03_models/three_plan/results
