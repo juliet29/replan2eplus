@@ -35,6 +35,10 @@ class IDF:
     def add_eppy_block(self, block: EppyBlock):
         self.idf.add_block(**block)
 
+    def intersect_match(self):
+        self.idf.intersect_match()
+        
+
     # My functions : )
     # TODO this is a property, unless adding filters later..
     def get_zones(self) -> list[EpBunch]:

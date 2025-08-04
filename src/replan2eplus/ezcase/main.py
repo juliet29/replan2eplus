@@ -25,6 +25,7 @@ class EZCase:
         return self.idf
 
     def add_zones(self, rooms: list[Room]):
+        # TODO - check that idf exists! 
         self.zones, self.surfaces = create_zones(self.idf, rooms)
 
 
