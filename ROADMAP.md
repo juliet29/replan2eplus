@@ -10,10 +10,18 @@ I/O
 Defaults and Constants
 - Will keep all defaults in a `defaults` folder or file? 
 
+Folder organization inside the design modules
+- data: reading json, will also have the json typed dict that is expected, and should throw error, maybe use pydantic
+- interfaces: has types that are used in logic and expected in presentation? 
+- logic: actual work 
+- presentation: functions that `ezcase/main.py` will call... 
 
 
 
 ## Maintenance
+
+Need to fix the geomeppy error!
+- Mutable sequence etc.. 
 
 Eppy/Geomeppy Inheritance
 - Decide if using Epbunch from Eppy or Geomeppy? 

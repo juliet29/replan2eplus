@@ -7,4 +7,4 @@ class InvalidEpBunchException(Exception):
         self.actual_key = actual_key
 
     def __str__(self):
-        return f"Expected an EpBunch with key `{self.expected_key}`, but instead got one with key `{self.actual_key}!"
+        return f"Expected an EpBunch with key `{self.expected_key}`, but instead got one with key `{self.actual_key}`!"

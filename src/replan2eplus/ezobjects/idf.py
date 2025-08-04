@@ -1,22 +1,46 @@
 from dataclasses import dataclass
 from eppy.bunch_subclass import EpBunch
+import replan2eplus.epnames.keys as epkeys
+from geomeppy import IDF as geomeppyIDF
+from typing import TypedDict
+from pathlib import Path
+from eppy.modeleditor import IDDAlreadySetError
 
-from eppy.modeleditor import IDF
+
+# TODO move to Eppy constants
+class EppyBlock(TypedDict):
+    name: str
+    coordinates: list[tuple[float, float]]
+    height: float
 
 
 @dataclass
-class EZIDF:
-    idf: IDF
+class IDF:
+    path_to_idd: Path
+    path_to_idf: Path
 
-    # Eppy functions
+    def __post_init__(self):
+        try:
+            geomeppyIDF.setiddname(self.path_to_idd)
+        except IDDAlreadySetError:
+            pass  # TODO log IDD already set, especially if the one they try to set is different..
+
+        self.idf = geomeppyIDF(idfname=self.path_to_idf)
+
+
+    # Geomepppy functions
     def print_idf(self):
-        self.idf.printidf()
+        self.idf.printidf()  # TOOD make sure works?
+
+    def add_eppy_block(self, block: EppyBlock):
+        self.idf.add_block(**block)
 
     # My functions : )
+    # TODO this is a property, unless adding filters later..
     def get_zones(self) -> list[EpBunch]:
         return [
-            i for i in self.idf.idfobjects["ZONE"]
+            i for i in self.idf.idfobjects[epkeys.ZONE]
         ]  # TODO could put EzBunch on top here.. => maybe if things get out of hand..
 
     def get_surfaces(self) -> list[EpBunch]:
-        return [i for i in self.idf.idfobjects["BUILDINGSURFACE:DETAILED"]]
+        return [i for i in self.idf.idfobjects[epkeys.SURFACE]]
