@@ -87,3 +87,7 @@ class Coordinate3D(Coord):
     def get_plane_axis_location(self, axis:str):
         # TODO check that all coords return the same value.. 
         return self.__dict__[axis]
+    
+    @property
+    def as_tuple(self):
+        return (self.x, self.y, self.z)

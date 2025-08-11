@@ -20,6 +20,4 @@ def create_zones(idf: IDF, rooms: list[Room]):
     # now get the zones from the idf..
     zones = [Zone(i) for i in idf.get_zones()]
     surfaces = [Surface(i, SURFACE) for i in idf.get_surfaces()]
-    domain = surfaces[0].get_domain
-    print("hicsa")
     return zones, surfaces

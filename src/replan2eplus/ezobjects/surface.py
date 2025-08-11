@@ -16,9 +16,6 @@ from rich import print as rprint
 # TODO intermediate class shared w subsurface? 
 @dataclass
 class Surface(EZObject2D): 
-    # def __post_init__(self):
-    #         # Call the base class's __init__ method
-    #         super().__init__(self.epbunch, expected_key=SURFACE) 
     @property
     def name(self):
         return self.epbunch.Name
