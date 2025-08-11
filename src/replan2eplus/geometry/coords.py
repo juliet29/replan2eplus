@@ -74,6 +74,7 @@ class Bounds(CoordList):
     tr: Coord
     tl: Coord
     bl: Coord
+    # TODO: investigate why this order.. 
 
 
 @dataclass(frozen=True)
@@ -82,3 +83,7 @@ class Coordinate3D(Coord):
 
     def get_pair(self, l1, l2):
         return Coord(self.__dict__[l1], self.__dict__[l2])
+    
+    def get_plane_axis_location(self, axis:str):
+        # TODO check that all coords return the same value.. 
+        return self.__dict__[axis]

@@ -8,7 +8,7 @@ from eppy.modeleditor import IDDAlreadySetError
 
 
 # TODO move to Eppy constants
-class EppyBlock(TypedDict):
+class GeomeppyBlock(TypedDict):
     name: str
     coordinates: list[tuple[float, float]]
     height: float
@@ -27,17 +27,15 @@ class IDF:
 
         self.idf = geomeppyIDF(idfname=self.path_to_idf)
 
-
     # Geomepppy functions
     def print_idf(self):
         self.idf.printidf()  # TOOD make sure works?
 
-    def add_eppy_block(self, block: EppyBlock):
+    def add_geomeppy_block(self, block: GeomeppyBlock):
         self.idf.add_block(**block)
 
     def intersect_match(self):
         self.idf.intersect_match()
-        
 
     # My functions : )
     # TODO this is a property, unless adding filters later..

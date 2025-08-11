@@ -27,6 +27,7 @@ class EZCase:
     def add_zones(self, rooms: list[Room]):
         # TODO - check that idf exists! 
         self.zones, self.surfaces = create_zones(self.idf, rooms)
+        # when do constructuins, these surfaces will be updated.. 
 
 
 if __name__ == "__main__":

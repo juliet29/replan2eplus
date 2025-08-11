@@ -17,9 +17,16 @@
 - logic: actual work 
 - presentation: functions that `ezcase/main.py` will call... 
 
+## Future Issues
+**Geometry rules**
+- Need to either conform to geometry rules from the idf, or assert that they are a particular way 
+- Need to find the boundaries and act accordingly. 
 
 
 ## Maintenance
+**Inheritance for EZObjects**
+- These should be regular classes not dataclasses, probably.. 
+
 
 **Need to fix the geomeppy error!**
   - Mutable sequence etc.. 

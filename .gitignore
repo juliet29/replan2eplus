@@ -13,3 +13,5 @@ wheels/
 
 static/_02_plans/svg2plan_outputs_p1gen/
 static/_03_models/three_plan/results
+ROADMAP.html
+ROADMAP_files/**

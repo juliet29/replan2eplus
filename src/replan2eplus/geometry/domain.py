@@ -2,6 +2,7 @@ from matplotlib.patches import Rectangle
 from dataclasses import dataclass
 from replan2eplus.geometry.coords import Bounds, Coord, PerimeterMidpoints
 from replan2eplus.geometry.range import Range
+from typing import Literal, NamedTuple
 
 
 def extend_bounds(bounds: Bounds, EXTENTS: int):
@@ -12,11 +13,19 @@ def extend_bounds(bounds: Bounds, EXTENTS: int):
     coords = [br, tr, tl, bl]
     return Bounds(*[Coord(*i) for i in coords])
 
+AXIS = Literal["X", "Y", "Z"]
+
+class Plane(NamedTuple):
+    axis: AXIS
+    location: float
+    
+
 
 @dataclass(frozen=True)
 class Domain:
     horz_range: Range
     vert_range: Range
+    plane: Plane | None = None
 
     @classmethod
     def from_coords_list(cls, coords: list[Coord]):
@@ -121,3 +130,6 @@ class MultiDomain:
             extended_domain.horz_range.as_tuple,
             extended_domain.vert_range.as_tuple,
         )
+
+
+
