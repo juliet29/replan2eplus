@@ -1,6 +1,6 @@
 import pytest
 from replan2eplus.geometry.range import Range
-from replan2eplus.geometry.coords2 import (
+from replan2eplus.geometry.contact_points import (
     Nonant,
     NonantEntries,
     CornerEntries,
@@ -24,7 +24,6 @@ cardinal_groups: list[tuple[CardinalEntries, Coord]] = [
 ]
 
 
-
 @pytest.mark.parametrize("corner, coord", cardinal_groups)
 def test_cardinal_points(corner, coord, base_domain):
     assert base_domain.cardinal[corner] == coord
@@ -37,7 +36,7 @@ corner_groups: list[tuple[CornerEntries, Coord]] = [
     ("NORTH_WEST", Coord(0, 3)),
 ]
 
-# @pytest.mark.skip()
+
 @pytest.mark.parametrize("corner, coord", corner_groups)
 def test_corner_points(corner, coord, base_domain):
     assert base_domain.corner[corner] == coord
@@ -45,7 +44,7 @@ def test_corner_points(corner, coord, base_domain):
 
 trirange_groups = [(Range(0, 3), 0, 1, 2, 3), (Range(-3, 0), -3, -2, -1, 0)]
 
-@pytest.mark.skip()
+
 @pytest.mark.parametrize("range, min, mid1, mid2, max", trirange_groups)
 def test_create_trirange(range, min, mid1, mid2, max):
     trirange = range.trirange
@@ -65,11 +64,14 @@ points_groups: list[tuple[NonantEntries, Coord]] = [
     # middle
     ("bm", Coord(1, 0)),
     ("mm", Coord(1, 1)),
+    ("tm", Coord(1, 2)),
     # right
+    ("br", Coord(2, 0)),
+    ("mr", Coord(2, 1)),
     ("tr", Coord(2, 2)),
 ]
 
-@pytest.mark.skip()
+
 @pytest.mark.parametrize("corner, coord", points_groups)
 def test_nonant_points(corner, coord, base_domain):
     assert base_domain.nonant[corner] == coord
@@ -81,6 +83,7 @@ domain_groups: list[tuple[NonantEntries, Domain]] = [
     ("tr", Domain(Range(2, 3), Range(3, 3))),
     ("mr", Domain(Range(2, 3), Range(1, 2))),
 ]
+
 
 @pytest.mark.skip()
 @pytest.mark.parametrize("corner, expected_domain", domain_groups)

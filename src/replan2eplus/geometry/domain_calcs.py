@@ -1,4 +1,4 @@
-from replan2eplus.geometry.coords2 import CardinalPoints, CornerPoints
+from replan2eplus.geometry.contact_points import CardinalPoints, CornerPoints
 from replan2eplus.geometry.coords import Coord
 from dataclasses import dataclass
 from replan2eplus.geometry.range import Range

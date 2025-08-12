@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from replan2eplus.geometry.coords import Coord
 from replan2eplus.geometry.range import Range
-from replan2eplus.geometry.coords2 import CardinalPoints, Nonant
+from replan2eplus.geometry.contact_points import CardinalPoints, Nonant
 from typing import Literal, NamedTuple
-from replan2eplus.geometry.coord_calcs import (
+from replan2eplus.geometry.domain_calcs import (
     BaseDomain,
     calculate_cardinal_points,
     calculate_corner_points,
