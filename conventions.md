@@ -8,6 +8,7 @@
 
 **Defaults and Constants**
 - Will keep all defaults in a `defaults` folder or file? 
+- Will have examples separately
 
 
 **Folder organization inside the design modules**
@@ -16,5 +17,6 @@
 - logic: actual work 
 - presentation: functions that `ezcase/main.py` will call... 
 
+## Geometry
 **Unit Vectors**
 ![Normal Vector Drawing](conventions/normal_vector.png)
