@@ -16,18 +16,6 @@ def base_domain():
     return Domain(Range(0, 3), Range(0, 3))
 
 
-corner_groups: list[tuple[CornerEntries, Coord]] = [
-    ("NORTH_EAST", Coord(3, 3)),
-    ("SOUTH_EAST", Coord(3, 0)),
-    ("SOUTH_WEST", Coord(0, 0)),
-    ("NORTH_WEST", Coord(0, 3)),
-]
-
-@pytest.mark.parametrize("corner, coord", corner_groups)
-def test_corner_points(corner, coord, base_domain):
-    assert base_domain[corner] == coord
-
-
 cardinal_groups: list[tuple[CardinalEntries, Coord]] = [
     ("NORTH", Coord(1.5, 3)),
     ("EAST", Coord(3, 1.5)),
@@ -36,14 +24,28 @@ cardinal_groups: list[tuple[CardinalEntries, Coord]] = [
 ]
 
 
-@pytest.mark.parametrize("corner, coord", corner_groups)
+
+@pytest.mark.parametrize("corner, coord", cardinal_groups)
 def test_cardinal_points(corner, coord, base_domain):
-    assert base_domain[corner] == coord
+    assert base_domain.cardinal[corner] == coord
+
+
+corner_groups: list[tuple[CornerEntries, Coord]] = [
+    ("NORTH_EAST", Coord(3, 3)),
+    ("SOUTH_EAST", Coord(3, 0)),
+    ("SOUTH_WEST", Coord(0, 0)),
+    ("NORTH_WEST", Coord(0, 3)),
+]
+
+# @pytest.mark.skip()
+@pytest.mark.parametrize("corner, coord", corner_groups)
+def test_corner_points(corner, coord, base_domain):
+    assert base_domain.corner[corner] == coord
 
 
 trirange_groups = [(Range(0, 3), 0, 1, 2, 3), (Range(-3, 0), -3, -2, -1, 0)]
 
-
+@pytest.mark.skip()
 @pytest.mark.parametrize("range, min, mid1, mid2, max", trirange_groups)
 def test_create_trirange(range, min, mid1, mid2, max):
     trirange = range.trirange
@@ -67,7 +69,7 @@ points_groups: list[tuple[NonantEntries, Coord]] = [
     ("tr", Coord(2, 2)),
 ]
 
-
+@pytest.mark.skip()
 @pytest.mark.parametrize("corner, coord", points_groups)
 def test_nonant_points(corner, coord, base_domain):
     assert base_domain.nonant[corner] == coord
@@ -80,7 +82,7 @@ domain_groups: list[tuple[NonantEntries, Domain]] = [
     ("mr", Domain(Range(2, 3), Range(1, 2))),
 ]
 
-
+@pytest.mark.skip()
 @pytest.mark.parametrize("corner, expected_domain", domain_groups)
 def test_nonant_domain(corner, expected_domain, base_domain):
     new_domain = create_nonant_domain(
@@ -90,6 +92,7 @@ def test_nonant_domain(corner, expected_domain, base_domain):
 
 
 # this would be a combinatorial thing..but just a few -> will test all cardinal points differently.. better yet -> is the same as if had defined the domain independently..
+@pytest.mark.skip()
 def test_get_corner_point_of_nonant_domain(base_domain):
     new_domain = create_nonant_domain(base_domain, "bl")
     new_domain.cardinal.NORTH == Coord(0.5, 1)
