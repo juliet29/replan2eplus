@@ -1,14 +1,12 @@
 import pytest
 from replan2eplus.geometry.range import Range
 from replan2eplus.geometry.contact_points import (
-    Nonant,
     NonantEntries,
     CornerEntries,
     CardinalEntries,
 )
-from replan2eplus.geometry.domain import Domain
+from replan2eplus.geometry.domain import Domain, create_domain_for_nonant
 from replan2eplus.geometry.coords import Coord
-import numpy as np
 
 
 @pytest.fixture()
@@ -55,7 +53,6 @@ def test_create_trirange(range, min, mid1, mid2, max):
     assert trirange.dist_between == 1
 
 
-# TODO seems like something that could test with hypothesis
 points_groups: list[tuple[NonantEntries, Coord]] = [
     # left
     ("bl", Coord(0, 0)),
@@ -70,8 +67,6 @@ points_groups: list[tuple[NonantEntries, Coord]] = [
     ("mr", Coord(2, 1)),
     ("tr", Coord(2, 2)),
 ]
-
-
 @pytest.mark.parametrize("corner, coord", points_groups)
 def test_nonant_points(corner, coord, base_domain):
     assert base_domain.nonant[corner] == coord
@@ -80,25 +75,23 @@ def test_nonant_points(corner, coord, base_domain):
 domain_groups: list[tuple[NonantEntries, Domain]] = [
     ("bl", Domain(Range(0, 1), Range(0, 1))),
     ("mm", Domain(Range(1, 2), Range(1, 2))),
-    ("tr", Domain(Range(2, 3), Range(3, 3))),
+    ("tr", Domain(Range(2, 3), Range(2, 3))),
     ("mr", Domain(Range(2, 3), Range(1, 2))),
 ]
 
 
-@pytest.mark.skip()
 @pytest.mark.parametrize("corner, expected_domain", domain_groups)
 def test_nonant_domain(corner, expected_domain, base_domain):
-    new_domain = create_nonant_domain(
+    new_domain = create_domain_for_nonant(
         base_domain, corner
-    )  # TODO can be nonant entry string..
+    ) 
     assert expected_domain == new_domain
 
 
-# this would be a combinatorial thing..but just a few -> will test all cardinal points differently.. better yet -> is the same as if had defined the domain independently..
-@pytest.mark.skip()
+# NOTE: this would be a combinatorial thing..but just a few -> will test all cardinal points differently.. better yet -> is the same as if had defined the domain independently..
 def test_get_corner_point_of_nonant_domain(base_domain):
-    new_domain = create_nonant_domain(base_domain, "bl")
-    new_domain.cardinal.NORTH == Coord(0.5, 1)
+    new_domain = create_domain_for_nonant(base_domain, "bl")
+    assert new_domain.cardinal.NORTH == Coord(0.5, 1)
 
 
 # if __name__ == "__main__":

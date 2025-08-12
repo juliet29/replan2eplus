@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from replan2eplus.geometry.coords import Coord
 from replan2eplus.geometry.range import Range
-from replan2eplus.geometry.contact_points import CardinalPoints, Nonant
+from replan2eplus.geometry.contact_points import CardinalPoints, Nonant, NonantEntries
 from typing import Literal, NamedTuple
 from replan2eplus.geometry.domain_calcs import (
     BaseDomain,
@@ -58,6 +58,16 @@ class Domain(BaseDomain):
     @property
     def nonant(self):
         return Nonant(self.horz_range.trirange, self.vert_range.trirange)  # TODO
+
+
+# TODO should this be a class method yay or nay? 
+def create_domain_for_nonant(domain: Domain, loc: NonantEntries):
+    coord = domain.nonant[loc]
+    horz_dist = domain.nonant.horz_trirange.dist_between
+    vert_dist = domain.nonant.vert_trirange.dist_between
+    horz_range = Range(coord.x, coord.x + horz_dist)
+    vert_range = Range(coord.y, coord.y + vert_dist)
+    return Domain(horz_range, vert_range)
 
     # TODO return buffer of self..
 
