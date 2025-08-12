@@ -4,11 +4,30 @@ from typing import Callable, Literal, NamedTuple
 import numpy as np
 
 
-
 class InvalidRangeException(Exception):
     def __init__(self, min, max) -> None:
         super().__init__(self)
         print(f"{min:.2f} cannot be less than {max:.2f}")
+
+
+@dataclass
+class TriRange:
+    min: float
+    mid1: float
+    mid2: float
+    max: float
+
+    def __post_init__(self):
+        try:
+            # TODO np assert a list of numbers are close..
+            assert np.isclose(self.mid1 - self.min, self.mid2 - self.mid1)
+            # assert np.isclose(self.max - self.min, self.mid2 - self.mid1)
+        except AssertionError:
+            raise InvalidRangeException(self.min, self.max)
+
+    @property
+    def dist_between(self):
+        return self.mid1 - self.min
 
 
 @dataclass(frozen=True)
@@ -40,17 +59,23 @@ class Range:
     def size(self):
         return self.max - self.min
 
+    @property
+    def trirange(self):
+        result = np.linspace(self.min, self.max, num=4)
+        return TriRange(*[i.item() for i in result])
+    
+    
     def buffered_min(self, val):
         return self.min + val * self.size
 
     def buffered_max(self, val):
         return self.max - val * self.size
 
+
         # return [self.north.pair, self.south.pair, self.west.pair, self.east.pair]
 
     # @classmethod
     # def from_list_of_coords(cls, coords:list[Coord]):
-
 
 
 @dataclass

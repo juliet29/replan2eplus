@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from replan2eplus.geometry.coords import Coord
 from replan2eplus.geometry.range import Range
+from replan2eplus.geometry.coords2 import CardinalPoints, Nonant
 from typing import Literal, NamedTuple
 
 AXIS = Literal["X", "Y", "Z"]
@@ -9,6 +10,9 @@ class Plane(NamedTuple):
     axis: AXIS
     location: float
     
+# TODO domain calcs will live in a separate file.. 
+
+
 
 
 @dataclass(frozen=True)
@@ -28,16 +32,28 @@ class Domain:
 
 
     @property
-    def centroid(self):
-        return Coord(self.horz_range.midpoint, self.vert_range.midpoint)
-
-    @property
     def area(self):
         return self.horz_range.size * self.vert_range.size
 
     @property
     def aspect_ratio(self):
         return self.horz_range.size / self.vert_range.size
+    
+    @property
+    def centroid(self):
+        return Coord(self.horz_range.midpoint, self.vert_range.midpoint)
+    
+    # @property
+    # def cardinal(self):
+    #     return CardinalPoints() # TODO 
+    # @property
+    # def corner(self):
+    #     return CornerPoints() # TODO 
+    
+    @property
+    def nonant(self):
+        return Nonant(self.horz_range.trirange, self.vert_range.trirange) # TODO 
+    # TODO return buffer of self.. 
 
 
 
