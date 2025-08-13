@@ -32,6 +32,7 @@ class IDF:
         self.idf.printidf()  # TOOD make sure works?
 
     def add_geomeppy_block(self, block: GeomeppyBlock):
+        # the order this has to follow should be based on the idf.. -> global 
         self.idf.add_block(**block)
 
     def intersect_match(self):

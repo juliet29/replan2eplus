@@ -1,17 +1,13 @@
 import pytest
-from replan2eplus.geometry.domain_calcs import CardinalPoints, CornerPoints
+from replan2eplus.geometry.nonant import NonantEntries
 from replan2eplus.geometry.range import Range
+from replan2eplus.geometry.domain import Domain
 from replan2eplus.geometry.contact_points import (
-    NonantEntries,
     CornerEntries,
     CardinalEntries,
 )
-from replan2eplus.geometry.domain import (
-    Domain,
-    create_domain_for_nonant,
-    ContactEntries,
-    Dimension, create_domain_from_contact_point_and_dimensions, place_domain
-)
+from replan2eplus.geometry.domain_create import create_domain_for_nonant, ContactEntries, Dimension, create_domain_from_contact_point_and_dimensions, place_domain
+
 from replan2eplus.geometry.coords import Coord
 
 
@@ -102,27 +98,34 @@ def test_get_contact_point_of_nonant_domain(base_domain):
 
 coord_contact_point_groups: list[tuple[Coord, ContactEntries]] = [
     # (Coord(1, 1), "centroid"),# TODO!
-    (Coord(0, 0), "SOUTH_WEST"), 
+    (Coord(0, 0), "SOUTH_WEST"),
     # (Coord(2, 1), "EAST"),
 ]
+
 
 @pytest.mark.parametrize("coord, contact_point", coord_contact_point_groups)
 def test_create_domain_from_contact_point_and_dim(coord, contact_point):
     expected_domain = Domain(Range(0, 2), Range(0, 2))
     dimensions = Dimension(width=2, height=2)
-    domain = create_domain_from_contact_point_and_dimensions(coord, contact_point, dimensions)
+    domain = create_domain_from_contact_point_and_dimensions(
+        coord, contact_point, dimensions
+    )
     assert expected_domain == domain
 
+
 def test_place_with_domain(base_domain):
-    nonant =  "mm"
+    nonant = "mm"
     nonant_contact_loc = "NORTH_WEST"
     subsurface_contact_loc = "NORTH_WEST"
     subsurface_dimensions = Dimension(width=1, height=1)
-    new_domain:Domain = place_domain(base_domain, nonant, nonant_contact_loc, subsurface_contact_loc, subsurface_dimensions)
-    assert new_domain.corner.SOUTH_WEST == Coord(1,1)
-
-
-
+    new_domain: Domain = place_domain(
+        base_domain,
+        nonant,
+        nonant_contact_loc,
+        subsurface_contact_loc,
+        subsurface_dimensions,
+    )
+    assert new_domain.corner.SOUTH_WEST == Coord(1, 1)
 
 
 # if __name__ == "__main__":

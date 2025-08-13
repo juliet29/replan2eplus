@@ -6,7 +6,7 @@ from replan2eplus.geometry.domain import Domain
 from dataclasses import dataclass
 import pytest
 from replan2eplus.geometry.plane import create_domain_from_coords
-from replan2eplus.geometry.plane import compute_unit_normal_coords
+from replan2eplus.geometry.plane import compute_unit_normal
 
 
 @dataclass
@@ -90,8 +90,8 @@ test_planes = [
 @pytest.mark.parametrize("plane, create_coords_fx", test_planes)
 def test_find_normal(plane: AXIS, create_coords_fx: Callable[[], list[Coordinate3D]]):
     coords = create_coords_fx()
-    tuple_coords = [i.as_tuple for i in coords]
-    normal_axis = compute_unit_normal_coords(tuple_coords)
+    tuple_coords = [i.as_three_tuple for i in coords]
+    normal_axis = compute_unit_normal(tuple_coords)
     assert normal_axis == plane
 
 

@@ -22,7 +22,7 @@ class Coord:
         return (self.x, self.y)[i]
 
     @property
-    def pair(self):
+    def as_tuple(self):
         return (self.x, self.y)
     
 
@@ -38,5 +38,5 @@ class Coordinate3D(Coord):
         return self.__dict__[axis]
     
     @property
-    def as_tuple(self):
+    def as_three_tuple(self):
         return (self.x, self.y, self.z)

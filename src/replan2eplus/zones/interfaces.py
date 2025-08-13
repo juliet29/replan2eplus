@@ -13,7 +13,7 @@ class Room:
 
     @property
     def coords(self):
-        return self.domain.create_bounds().as_pairs
+        return self.domain.bounds
 
     def create_geomeppy_block(self):
         return GeomeppyBlock(

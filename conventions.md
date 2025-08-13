@@ -20,3 +20,10 @@
 ## Geometry
 **Unit Vectors**
 ![Normal Vector Drawing](conventions/normal_vector.png)
+
+
+**Order of points defining a closed polgyon**
+- Use EnergyPlus default [geometry rules](https://bigladdersoftware.com/epx/docs/22-2/input-output-reference/group-thermal-zone-description-geometry.html#globalgeometryrules): 
+  - Start Vertex: UpperLeftCorner
+  - Vertex Entry Direction: CounterClockWise
+  - Ex: N-E-S-W

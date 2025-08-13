@@ -2,12 +2,27 @@
 
 
 ## Need to Complete, Not Roadblocks atm  
+- [ ] Add default global geometry rules to all IDFs
+
+**Zones**
+- [ ] room zone key with RoomZonePair 
+- [ ] domain create bounds.. 
+Testing 
+- [ ] Tests to do on rooms -> no duplicates..
+- [ ] -> Domains should be hashed -> no dup domains,
+- [ ] no duplicate room names..
+- [ ] 
+
+
 **Subsurface logic**
 - [ ] creating domain from centroid
 - [ ] creating domain from cardinal points
 - [ ] buffer
 - [ ] checking subsurface and surface areas are valid, throwing image on error
 - [ ] clean up domains!
+2.0
+- [ ] > 1 subsurface on a surface
+
 
 ## Future Issues
 **Geometry rules**
@@ -36,34 +51,8 @@
 
 
 
-## DevEx
-- VSCode shortcut for `from rich import print as rprint` or global import?
 
 
 ## Learn more about 
 - Doing errors correctly.. 
 
-
-## Doesn't Matter Any More
-
-**Defaults associated with Minimal_AP.idf**
-- Are they what I would like?
-
-
-
-## Completed 
-
-**Eppy/Geomeppy Inheritance**
-- Decide if using Epbunch from Eppy or Geomeppy? 
-- Similarly decide if using IDF from Eppy or Geomeppy 
-- Think Geomeppy generally has more features.., but Eppy is the base
-- Decision: Using Geomeppy bc need add blocks.. 
-
-**Make constants with keys that are used**
-- ie Zone, BuildingSuface, etc => should all live in one locations.. folder => keys, then subdetails like "wall.." 
-
-
-**Corralling Ep-related functions**
-- Have an EZIDF class that has all the functions that need to happen at the idf level, this is what gets passed around.. 
-- Also have EzBunch that makes the object stuff more legible... 
-  - For now implemented as functions, could change this in the future.. 

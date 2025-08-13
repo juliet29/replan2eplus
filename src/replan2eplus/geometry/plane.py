@@ -1,6 +1,6 @@
 from geomeppy.geom.polygons import Polygon3D
 from replan2eplus.geometry.coords import Coordinate3D
-from replan2eplus.geometry.domain import Domain, Plane, AXIS
+from replan2eplus.geometry.domain import Domain, Plane, AXIS, create_domain_from_coords_list
 
 
 def get_location_of_fixed_plane(plane: AXIS, coords: list[Coordinate3D]):
@@ -29,7 +29,7 @@ def create_domain_from_coords(normal_axis: AXIS, coords: list[Coordinate3D]):
     location_of_fixed_plane = get_location_of_fixed_plane(normal_axis, coords)
 
     coords_2D = get_2D_coords(*pair)
-    domain = Domain.from_coords_list(coords_2D)
+    domain = create_domain_from_coords_list(coords_2D)
     return Domain(
         domain.horz_range,
         domain.vert_range,
@@ -37,22 +37,7 @@ def create_domain_from_coords(normal_axis: AXIS, coords: list[Coordinate3D]):
     )
 
 
-# def compute_unit_normal(surface: EpBunch) -> AXIS:
-
-#     vector_map: dict[tuple[int, int, int], AXIS] = {
-#         (1, 0, 0): "X",
-#         (0, 1, 0): "Y",
-#         (0, 0, 1): "Z",
-#     }
-#     polygon = Polygon3D(surface.coords)
-#     print(polygon)
-#     normal_vector = polygon.normal_vector
-#     nv = tuple([abs(int(i)) for i in normal_vector])
-#     assert len(nv) == 3
-#     return vector_map[nv]
-
-
-def compute_unit_normal_coords(coords: list[tuple[float, float, float]]) -> AXIS:
+def compute_unit_normal(coords: list[tuple[float, float, float]]) -> AXIS:
     vector_map: dict[tuple[int, int, int], AXIS] = {
         (1, 0, 0): "X",
         (0, 1, 0): "Y",
