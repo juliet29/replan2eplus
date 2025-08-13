@@ -64,7 +64,7 @@ class Range:
         result = np.linspace(self.min, self.max, num=4)
         return TriRange(*[i.item() for i in result])
     
-    
+
     def buffered_min(self, val):
         return self.min + val * self.size
 
@@ -78,29 +78,29 @@ class Range:
     # def from_list_of_coords(cls, coords:list[Coord]):
 
 
-@dataclass
-class Dimensions:  # TODO why is this different from a Domain?
-    width: float
-    height: float
+# @dataclass
+# class Dimensions:  # TODO why is this different from a Domain?
+#     width: float
+#     height: float
 
-    def __getitem__(self, i):
-        return (self.width, self.height)[i]
+#     def __getitem__(self, i):
+#         return (self.width, self.height)[i]
 
-    @property
-    def area(self):
-        return self.width * self.height
+#     @property
+#     def area(self):
+#         return self.width * self.height
 
-    def modify(self, fx: Callable[[float], float]):
-        return self.__class__(fx(self.width), fx(self.height))
+#     def modify(self, fx: Callable[[float], float]):
+#         return self.__class__(fx(self.width), fx(self.height))
 
-    def modify_area(self, factor: float):
-        # preserves aspect ratio
-        sqrt_val = factor ** (1 / 2)
-        return self.__class__.modify(self, lambda x: sqrt_val * x)
-
-
-# TODO -> convert these to be associated with the EPBUnch, https://eppy.readthedocs.io/en/latest/_modules/eppy/bunch_subclass.html#addfunctions
+#     def modify_area(self, factor: float):
+#         # preserves aspect ratio
+#         sqrt_val = factor ** (1 / 2)
+#         return self.__class__.modify(self, lambda x: sqrt_val * x)
 
 
-# def __lt__(self):
-#     return
+# # TODO -> convert these to be associated with the EPBUnch, https://eppy.readthedocs.io/en/latest/_modules/eppy/bunch_subclass.html#addfunctions
+
+
+# # def __lt__(self):
+# #     return

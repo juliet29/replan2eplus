@@ -1,5 +1,14 @@
 # Project Roadmap 
 
+
+## Need to Complete, Not Roadblocks atm  
+**Subsurface logic**
+- [ ] creating domain from centroid
+- [ ] creating domain from cardinal points
+- [ ] buffer
+- [ ] checking subsurface and surface areas are valid, throwing image on error
+- [ ] clean up domains!
+
 ## Future Issues
 **Geometry rules**
 - Need to either conform to geometry rules from the idf, or assert that they are a particular way 

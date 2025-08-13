@@ -36,14 +36,14 @@ class CornerPoints:
     SOUTH_WEST: Coord
     NORTH_WEST: Coord
 
-    def __getitem__(self, item: CardinalEntries) -> Coord:
+    def __getitem__(self, item: CornerEntries) -> Coord:
         # TODO check?
         return getattr(self, item)
 
 
 NonantEntries = Literal[
-    "horz_trirange",  # TODO not sure these should be here..
-    "vert_trirange",
+    # "horz_trirange",  # TODO not sure these should be here..
+    # "vert_trirange",
     "bl",
     "ml",
     "tl",
@@ -57,7 +57,7 @@ NonantEntries = Literal[
 
 
 @dataclass
-class Nonant:
+class Nonant: # effectively a quadrant, but 9
     horz_trirange: TriRange
     vert_trirange: TriRange
 
