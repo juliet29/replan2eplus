@@ -1,11 +1,6 @@
 from dataclasses import dataclass
-from geomeppy import IDF as geomeppyIDF
-from eppy.modeleditor import IDDAlreadySetError
-from ladybug.analysisperiod import AnalysisPeriod
 from pathlib import Path
-from rich import print as rprint
 from replan2eplus.ezobjects.idf import IDF
-from replan2eplus.paths import static_paths
 from replan2eplus.zones.interfaces import Room
 from replan2eplus.zones.presentation import create_zones
 
@@ -26,7 +21,7 @@ class EZCase:
 
     def add_zones(self, rooms: list[Room]):
         # TODO - check that idf exists! 
-        self.zones, self.surfaces = create_zones(self.idf, rooms)
+        self.zones, self.surfaces, self.room_map = create_zones(self.idf, rooms)
         # when do constructuins, these surfaces will be updated.. 
 
 

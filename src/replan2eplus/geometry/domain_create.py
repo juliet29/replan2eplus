@@ -16,7 +16,7 @@ from replan2eplus.geometry.coords import Coord
 # TODO the below is strictly subsurface related ----------
 
 
-# TODO should this be a class method yay or nay?
+# TODO should this be a class method yay or nay? -> actuall
 def create_domain_for_nonant(domain: Domain, loc: NonantEntries):
     coord = domain.nonant[loc]
     horz_dist = domain.nonant.horz_trirange.dist_between

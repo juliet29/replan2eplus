@@ -1,26 +1,23 @@
 from eppy.bunch_subclass import EpBunch
 from dataclasses import dataclass
-from replan2eplus.ezobjects.epbunch_utils import get_epbunch_key
-from replan2eplus.errors import InvalidEpBunchException
+from replan2eplus.ezobjects.base import EZObject
+
 import replan2eplus.epnames.keys as epkeys
 
 
 @dataclass
-class Zone:
+class Zone(EZObject):
     epbunch: EpBunch
     expected_key: str = epkeys.ZONE
-    # TODO check that it has certain characteristsics or fail..
-
-    def __post_init__(self):
-        actual_key = get_epbunch_key(self.epbunch)
-        try:
-            assert actual_key == self.expected_key
-        except AssertionError:
-            raise InvalidEpBunchException(self.expected_key, actual_key)
 
     @property
-    def name(self):
-        return self.epbunch.Name
+    def room_name(self):
+        return self.dname.plan_name
+    
+    @property
+    def zone_name(self):
+        return self.dname.zone_name
+
 
 
 # TODO create a parent class, but figure out visuals first..

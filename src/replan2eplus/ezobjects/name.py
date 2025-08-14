@@ -34,9 +34,9 @@ class IDFName(NamedTuple):
     def recreate_zone_name(self):
         return " ".join([self.zone_name, self.plan_name, self.storey_name]) # TODO redundnat with method on Zone?
     
-    @property
-    def plan_name_alone(self):
-        return self.plan_name.replace("`", "")
+    # @property
+    # def plan_name_alone(self):
+    #     return self.plan_name.replace("`", "")
 
 
 
@@ -60,7 +60,7 @@ def decompose_idf_name(name: str):
 
     s = IDFName(
         match(block),
-        match(plan_name),
+        match(plan_name).replace("`", ""),
         match(storey),
         match(surface_type),
         match(n_direction),

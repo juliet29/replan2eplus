@@ -4,6 +4,9 @@
 ## Need to Complete, Not Roadblocks atm  
 - [ ] Add default global geometry rules to all IDFs
 
+**Base Objects**
+- [ ] Test names, especially the regexing..
+
 **Zones**
 - [ ] room zone key with RoomZonePair 
 - [ ] domain create bounds.. 
@@ -31,12 +34,16 @@ Testing
 
 
 ## Maintenance
+**Exception**
+- Review code, figure out types of exceptions being thrown, and handle accordingly
+  
+
 **Inheritance for EZObjects**
 - These should be regular classes not dataclasses, probably.. 
 
 
 **Need to fix the geomeppy error!**
-  - Mutable sequence etc.. 
+  - Mutable sequence bc of different version of python -> pull request?
 
 **Set location of EnergyPlus Installation + IDD file**
 - Either look for this or or make an input to EZCase.. 

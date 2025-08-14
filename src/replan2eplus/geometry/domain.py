@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from replan2eplus.geometry.coords import Coord
 from replan2eplus.geometry.nonant import Nonant, NonantEntries
-from replan2eplus.geometry.range import Range
 from replan2eplus.geometry.contact_points import (
     CardinalEntries,
     CornerEntries,
@@ -45,7 +44,7 @@ class Domain(BaseDomain):
     @property
     def corner(self):  # TODO should these be anscestors?
         return calculate_corner_points(self)  # TODO
-    
+
     @property
     def bounds(self):
         return self.corner.tuple_list
@@ -54,13 +53,6 @@ class Domain(BaseDomain):
     def nonant(self):
         return Nonant(self.horz_range.trirange, self.vert_range.trirange)  # TODO
 
-
-def create_domain_from_coords_list(coords: list[Coord]):
-    xs = sorted(set([i.x for i in coords]))
-    ys = sorted(set([i.y for i in coords]))
-    horz_range = Range(xs[0], xs[-1])
-    vert_range = Range(ys[0], ys[-1])
-    return Domain(horz_range, vert_range)
 
 # @dataclass
 # class MultiDomain:
