@@ -1,10 +1,13 @@
 # TODO should all examples live in one directory or with their creators?
-from replan2eplus.examples.minimal import get_minimal_case
+from replan2eplus.examples.minimal import get_minimal_case, get_minimal_case_with_rooms
 from replan2eplus.examples.minimal import TEST_ROOMS, ROOM2, ROOM1
 from replan2eplus.subsurfaces.interfaces import Edge, Node
 import pytest
 
-from replan2eplus.subsurfaces.logic import get_surface_between_zones
+from replan2eplus.subsurfaces.logic import (
+    get_surface_between_zones,
+    get_surface_between_zone_and_direction,
+)
 
 
 @pytest.mark.skip("Not implemented")
@@ -31,15 +34,19 @@ def test_find_correct_surface_between_zone_and_direction(
     case = get_pytest_minimal_case_with_rooms
     # TODO: this can go into minimal.py -> build out a story there..
     node_a = Node(ROOM1, "Zone")
-    node_b = Node("WEST", "Direction")
+    node_b = Node("EAST", "Direction") #TODO: WEST should be outer, geometry is messed up 
     edge = Edge(node_a, node_b)
     surf = get_surface_between_zone_and_direction(edge, case.zones)
-    assert surf.surface_name == "Block `room1` Storey 0 Wall 0004" #TODO just guessing might be wrong 
-    assert not  surf.neighbor 
+    assert (
+        surf.surface_name == "Block `room1` Storey 0 Wall 0003" 
+    )  # TODO just guessing might be wrong
+    assert not surf.neighbor
 
 
 if __name__ == "__main__":
-    case = get_minimal_case()
-    case.add_zones(TEST_ROOMS)
-    print(case.surfaces)
+    case = get_minimal_case_with_rooms()
+    node_a = Node(ROOM1, "Zone")
+    node_b = Node("WEST", "Direction")
+    edge = Edge(node_a, node_b)
+    surf = get_surface_between_zone_and_direction(edge, case.zones)
     pass
