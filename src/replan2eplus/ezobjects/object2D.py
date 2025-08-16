@@ -22,7 +22,6 @@ def get_surface_domain(surface: EpBunch):
 
 @dataclass
 class EZObject2D(EZObject):
-
     @property
     def get_domain(self):
-        return get_surface_domain(self.epbunch)
+        return get_surface_domain(self._epbunch)

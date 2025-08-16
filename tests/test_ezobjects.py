@@ -9,7 +9,7 @@ N_SURFACES_PER_CUBE = 6
 def test_decompose_block_name(get_pytest_minimal_case_with_rooms):
     case = get_pytest_minimal_case_with_rooms
     zone0 = case.zones[0]
-    assert zone0.dname.plan_name == ROOM1
+    assert zone0._dname.plan_name == ROOM1
 
 
 if __name__ == "__main__":

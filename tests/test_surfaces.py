@@ -3,7 +3,7 @@ import replan2eplus.epnames.keys as keys
 from replan2eplus.examples.existing import get_example_idf
 
 
-# TODO: test init surface! 
+# TODO: test init surface!
 
 
 def test_assign_surface_conditions(get_pytest_example_idf):
@@ -12,13 +12,13 @@ def test_assign_surface_conditions(get_pytest_example_idf):
     outward_surfaces = [
         i for i in surfaces if i.Outside_Boundary_Condition == "outdoors"
     ]
-    s1 = Surface(outward_surfaces[0], keys.SURFACE)
+    s1 = Surface(outward_surfaces[0])
     assert s1.boundary_condition == "outdoors"
 
 
 def test_get_surface_neighbor(get_pytest_example_idf):
     idf = get_pytest_example_idf
-    surfaces = [Surface(i, keys.SURFACE) for i in idf.get_surfaces()]
+    surfaces = [Surface(i) for i in idf.get_surfaces()]
     indoor_surfaces = [i for i in surfaces if i.boundary_condition == "surface"]
 
     assert indoor_surfaces[0].neighbor
@@ -27,5 +27,5 @@ def test_get_surface_neighbor(get_pytest_example_idf):
 if __name__ == "__main__":
     idf = get_example_idf()
     surfaces = idf.get_surfaces()
-    s = Surface(surfaces[0], expected_key=keys.SURFACE)
+    s = Surface(surfaces[0])
     print(surfaces[0])

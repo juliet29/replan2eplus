@@ -10,26 +10,21 @@ def get_zones_by_plan_name(room_name: str, zones: list[Zone]):
     assert len(candidates) == 1, BadlyFormatedIDFError(
         f"More than one zone with the room name: `{room_name}`: {candidates}"
     )
+    # TODO check the plan name is valid! 
     return candidates[0]
 
 
-def get_surface_between_zones(edge: Edge, room_map: RoomMap, zones: list[Zone]):
-    # names = [edge.u.name, edge.u.name]
-    # for name in names:
-    #     room_map.validate_room(
-    #         name
-    #     )  # TODO: can clean this up by having validate_room return the name
-
+def get_surface_between_zones(edge: Edge, zones: list[Zone]):
     zone_a = get_zones_by_plan_name(edge.u.name, zones)
     zone_b = get_zones_by_plan_name(edge.v.name, zones)
 
-    candidates:list[Surface] = []
+    candidates: list[Surface] = []
 
     for surface in zone_a.surfaces:
         if surface.neighbor and surface.neighbor in zone_b.surface_names:
             candidates.append(surface)
 
-    # TODO this can be shared
+    # TODO this is a repeating pattern -> can just pass the messages! 
     if len(candidates) == 0:
         raise IDFMisunderstandingError(
             f"Could not find any surfaces  between zones. {zone_a.zone_name} and {zone_b.zone_name} may not be neighbors!"
@@ -38,12 +33,26 @@ def get_surface_between_zones(edge: Edge, room_map: RoomMap, zones: list[Zone]):
         raise BadlyFormatedIDFError(
             f"Should not have more than one shared wall between zones. Between {zone_a.zone_name} and {zone_b.zone_name}, have {len(candidates)} walls: `{candidates}` "
         )
-
     return candidates[0]
 
-    # for surf in zone.surfaces.. -> how to get surfaces on zones..
+def get_surface_between_zone_and_direction(edge: Edge, zones: list[Zone]):
+    zone_a = get_zones_by_plan_name(edge.u.name, zones)
+    direction = edge.v.name
 
-    # get the zone objects///
+    candidates = zone_a.directed_surfaces[direction]
+
+
+
+    # TODO this is a repeating pattern -> can just pass the messages! 
+    if len(candidates) == 0:
+        raise BadlyFormatedIDFError(
+            f"Could not find any surfaces on the `{direction}` side of the zone `{zone_a.zone_name}`"
+        )
+    if len(candidates) > 1:
+        raise BadlyFormatedIDFError(
+            f"Should not have more than one shared wall between zones. Between {zone_a.zone_name} and {zone_b.zone_name}, have {len(candidates)} walls: `{candidates}` "
+        )
+    return candidates[0]
 
 
 def get_surfaces_for_all_edges(edges: Edge, room_map: RoomMap):

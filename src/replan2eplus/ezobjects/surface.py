@@ -1,9 +1,10 @@
 from replan2eplus.ezobjects.object2D import EZObject2D
 from dataclasses import dataclass
-import replan2eplus.epnames.keys as keys
+import replan2eplus.epnames.keys as epkeys
 from enum import StrEnum, Enum
 from typing import Literal
 from replan2eplus.errors import IDFMisunderstandingError, BadlyFormatedIDFError
+from eppy.bunch_subclass import EpBunch
 
 from replan2eplus.geometry.directions import WallNormal
 
@@ -26,24 +27,26 @@ SurfaceTypeNames = Literal["floor", "roof", "wall"]
 @dataclass
 class Surface(EZObject2D):
     # TODO turn to class (instead of) if have to init later..?  / read python docs..
+    _epbunch: EpBunch
+    expected_key: str = epkeys.SURFACE
     def __post_init__(self):
-        assert self.expected_key == keys.SURFACE
+        assert self.expected_key == epkeys.SURFACE
 
     @property
     def surface_name(self):
-        return self.idf_name
+        return self._idf_name
 
     @property
     def zone_name(self):
-        return self.epbunch.Zone_Name
+        return self._epbunch.Zone_Name
 
     @property
     def type_(self) -> SurfaceTypeNames:
-        return SurfaceType(self.epbunch.Surface_Type).name
+        return SurfaceType(self._epbunch.Surface_Type).name
 
     @property
     def azimuth(self):
-        return round(float(self.epbunch.azimuth))
+        return round(float(self._epbunch.azimuth))
 
     @property
     def direction(self):
@@ -59,12 +62,12 @@ class Surface(EZObject2D):
 
     @property
     def boundary_condition(self) -> SurfaceBoundaryConditionNames:
-        return SurfaceBoundaryCondition(self.epbunch.Outside_Boundary_Condition).name
+        return SurfaceBoundaryCondition(self._epbunch.Outside_Boundary_Condition).name
 
     @property
     def neighbor(self):
         if self.boundary_condition == "surface":
-            return str(self.epbunch.Outside_Boundary_Condition_Object)  #
+            return str(self._epbunch.Outside_Boundary_Condition_Object)  #
         else:
             return None
             # raise IDFMisunderstandingError(

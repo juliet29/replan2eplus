@@ -30,7 +30,7 @@ def test_zone_names(get_pytest_example_idf):  # TODO more thorough test of names
     idf = get_pytest_example_idf
     zones = idf.get_zones()
     zone = Zone(zones[0])
-    assert zone.dname.plan_name == "a"
+    assert zone._dname.plan_name == "a"
 
 
 ## NOTE: This is more zone specific

@@ -14,16 +14,28 @@ def test_create_edge_with_bad_name():
         ...
 
 
-def test_find_correct_surface_between_zones(get_pytest_minimal_case):
-    case = get_pytest_minimal_case
-    case.add_zones(TEST_ROOMS)
+def test_find_correct_surface_between_zones(get_pytest_minimal_case_with_rooms):
+    case = get_pytest_minimal_case_with_rooms
     # TODO: this can go into minimal.py -> build out a story there..
     node_a = Node(ROOM1, "Zone")
     node_b = Node(ROOM2, "Zone")
     edge = Edge(node_a, node_b)
-    surf = get_surface_between_zones(edge, case.room_map, case.zones)
+    surf = get_surface_between_zones(edge, case.zones)
     assert surf.surface_name == "Block `room1` Storey 0 Wall 0001_1"
     assert surf.neighbor == "Block `room2` Storey 0 Wall 0003_1"
+
+
+def test_find_correct_surface_between_zone_and_direction(
+    get_pytest_minimal_case_with_rooms,
+):
+    case = get_pytest_minimal_case_with_rooms
+    # TODO: this can go into minimal.py -> build out a story there..
+    node_a = Node(ROOM1, "Zone")
+    node_b = Node("WEST", "Direction")
+    edge = Edge(node_a, node_b)
+    surf = get_surface_between_zone_and_direction(edge, case.zones)
+    assert surf.surface_name == "Block `room1` Storey 0 Wall 0004" #TODO just guessing might be wrong 
+    assert not  surf.neighbor 
 
 
 if __name__ == "__main__":
