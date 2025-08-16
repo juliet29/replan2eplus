@@ -30,6 +30,10 @@ class Surface(EZObject2D):
         assert self.expected_key == keys.SURFACE
 
     @property
+    def zone_name(self):
+        return self.epbunch.Zone_Name
+
+    @property
     def type_(self) -> SurfaceTypeNames:
         return SurfaceType(self.epbunch.Surface_Type).name
 

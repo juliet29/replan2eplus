@@ -12,6 +12,19 @@ import replan2eplus.epnames.keys as keys
 # no duplicate room names..
 
 
+# TODO may need a different home..
+def get_zone_surfaces(zone: Zone, surfaces: list[Surface]):
+    return [i for i in surfaces if i.zone_name == zone.zone_name]
+
+
+def assign_zone_surfaces(zones: list[Zone], surfaces: list[Surface]):
+    for zone in zones:
+        z_surfaces =  get_zone_surfaces(zone, surfaces)
+        zone.surfaces = z_surfaces
+        assert len(zone.surfaces) >= 6 
+    return zones
+
+
 def create_zones(idf: IDF, rooms: list[Room]):
     # TODO move to logic!
     for room in rooms:
@@ -23,5 +36,8 @@ def create_zones(idf: IDF, rooms: list[Room]):
     surfaces = [
         Surface(i, keys.SURFACE) for i in idf.get_surfaces()
     ]  # TODO can this be done automatically?, ie dont have to declare surface?
+    updates_zones = assign_zone_surfaces(zones, surfaces)
+
+    # figure out zone surfaces..
     room_map = RoomMap([RoomZonePair(i.room_name, i.zone_name) for i in zones])
-    return zones, surfaces, room_map
+    return updates_zones, surfaces, room_map
