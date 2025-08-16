@@ -4,6 +4,8 @@ from replan2eplus.examples.minimal import TEST_ROOMS, ROOM2, ROOM1
 from replan2eplus.subsurfaces.interfaces import Edge, Node
 import pytest
 
+from replan2eplus.subsurfaces.logic import get_surface_between_zones
+
 
 @pytest.mark.skip("Not implemented")
 def test_create_edge_with_bad_name():
@@ -15,12 +17,13 @@ def test_create_edge_with_bad_name():
 def test_find_correct_surface_between_zones(get_pytest_minimal_case):
     case = get_pytest_minimal_case
     case.add_zones(TEST_ROOMS)
+    # TODO: this can go into minimal.py -> build out a story there..
     node_a = Node(ROOM1, "Zone")
     node_b = Node(ROOM2, "Zone")
     edge = Edge(node_a, node_b)
-    surf = get_surface_between_zones(edge)
-    assert surf == "Block `room2` Storey 0 Wall 0003_1"
-
+    surf = get_surface_between_zones(edge, case.room_map, case.zones)
+    assert surf.surface_name == "Block `room1` Storey 0 Wall 0001_1"
+    assert surf.neighbor == "Block `room2` Storey 0 Wall 0003_1"
 
 
 if __name__ == "__main__":

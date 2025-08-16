@@ -30,6 +30,10 @@ class Surface(EZObject2D):
         assert self.expected_key == keys.SURFACE
 
     @property
+    def surface_name(self):
+        return self.idf_name
+
+    @property
     def zone_name(self):
         return self.epbunch.Zone_Name
 
@@ -60,9 +64,10 @@ class Surface(EZObject2D):
     @property
     def neighbor(self):
         if self.boundary_condition == "surface":
-            return self.epbunch.Outside_Boundary_Condition_Object  #
+            return str(self.epbunch.Outside_Boundary_Condition_Object)  #
         else:
-            raise IDFMisunderstandingError(
-                "This surface has no neighbor!"
-            )  # maybe better to return the direction? ->
-            # TODO could have a neighbor in a multistory situation though..
+            return None
+            # raise IDFMisunderstandingError(
+            #     "This surface has no neighbor!"
+            # )  # maybe better to return the direction? ->
+            # # TODO could have a neighbor in a multistory situation though..

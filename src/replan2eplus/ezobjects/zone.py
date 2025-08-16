@@ -20,6 +20,11 @@ class Zone(EZObject):
     @property
     def zone_name(self): # idf name?
         return self.idf_name
+    
+    @property
+    def surface_names(self):
+        return [i.surface_name for i in self.surfaces]
+        
 
 
 

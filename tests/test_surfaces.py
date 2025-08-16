@@ -3,6 +3,9 @@ import replan2eplus.epnames.keys as keys
 from replan2eplus.examples.existing import get_example_idf
 
 
+# TODO: test init surface! 
+
+
 def test_assign_surface_conditions(get_pytest_example_idf):
     idf = get_pytest_example_idf
     surfaces = idf.get_surfaces()

@@ -16,6 +16,8 @@ def get_minimal_case():
     return case
 
 
+
+
 RangeX1 = Range(0, 1)
 RangeX2 = Range(1, 2)
 RangeY1 = Range(0, 1)
@@ -34,3 +36,7 @@ TEST_ROOMS = [Room(ROOM1, Domain1, Height), Room(ROOM2, Domain2, Height)]
 
 
 
+def get_minimal_case_with_rooms():
+    case =  get_minimal_case()
+    case.add_zones(TEST_ROOMS)
+    return case
