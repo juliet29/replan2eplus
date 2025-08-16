@@ -1,6 +1,9 @@
 from typing import NamedTuple, Literal
 from dataclasses import dataclass
 from utils4plans.sets import set_difference
+from replan2eplus.geometry.contact_points import CornerEntries
+from replan2eplus.geometry.domain_create import Dimension
+from replan2eplus.geometry.nonant import NonantEntries
 
 
 class Node(NamedTuple):
@@ -23,4 +26,23 @@ class Edges:
 
     @property
     def zone_drn_edges(self):
+        # TODO: sort and give type..
         return set_difference(self.edges, self.zone_edges)
+    
+
+
+
+class Location(NamedTuple):
+    nonant_loc: NonantEntries
+    nonant_contact_loc: CornerEntries
+    subsurface_contact_loc: CornerEntries
+    
+
+# class Attributes:
+#     pass
+
+class Details(NamedTuple):
+    # edge: Edge
+    dimension: Dimension
+    location: Location
+    type_: Literal["Door", "Window"]

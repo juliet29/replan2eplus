@@ -1,4 +1,4 @@
-from replan2eplus.examples.minimal import TEST_ROOMS
+from replan2eplus.examples.minimal import test_rooms
 from replan2eplus.zones.presentation import create_zones
 from replan2eplus.examples.minimal import get_minimal_idf
 from replan2eplus.errors import InvalidEpBunchError
@@ -38,18 +38,18 @@ def test_zone_names(get_pytest_example_idf):  # TODO more thorough test of names
 
 def test_add_zones(get_pytest_minimal_idf):
     idf = get_pytest_minimal_idf
-    zones, *_ = create_zones(idf, TEST_ROOMS)
-    assert len(zones) == len(TEST_ROOMS)
+    zones, *_ = create_zones(idf, test_rooms)
+    assert len(zones) == len(test_rooms)
 
 
 def test_add_surfaces_with_zones(get_pytest_minimal_idf):
     idf = get_pytest_minimal_idf
-    _, surfaces, _ = create_zones(idf, TEST_ROOMS)
-    assert len(surfaces) == len(TEST_ROOMS) * N_SURFACES_PER_CUBE
+    _, surfaces, _ = create_zones(idf, test_rooms)
+    assert len(surfaces) == len(test_rooms) * N_SURFACES_PER_CUBE
 
 
 if __name__ == "__main__":
     idf = get_minimal_idf()
-    zones, surfaces, _ = create_zones(idf, TEST_ROOMS)
+    zones, surfaces, _ = create_zones(idf, test_rooms)
     print(surfaces)
     # EZObject2D(epbunch=)

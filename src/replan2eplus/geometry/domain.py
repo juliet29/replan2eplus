@@ -1,12 +1,7 @@
 from dataclasses import dataclass
 from replan2eplus.geometry.coords import Coord
-from replan2eplus.geometry.nonant import Nonant, NonantEntries
-from replan2eplus.geometry.contact_points import (
-    CardinalEntries,
-    CornerEntries,
-    CornerPoints,
-)
-from typing import Literal, NamedTuple, Union
+from replan2eplus.geometry.nonant import Nonant
+from typing import Literal, NamedTuple
 from replan2eplus.geometry.domain_calcs import (
     BaseDomain,
     calculate_cardinal_points,

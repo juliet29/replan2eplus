@@ -16,8 +16,6 @@ def get_minimal_case():
     return case
 
 
-
-
 RangeX1 = Range(0, 1)
 RangeX2 = Range(1, 2)
 RangeY1 = Range(0, 1)
@@ -28,15 +26,16 @@ Domain2 = Domain(RangeX2, RangeY1)
 Height = 3.05  # m
 
 
-ROOM1 = "room1"
-ROOM2 = "room2"
+# ROOM1_NAME = "room1"
+# ROOM2_NAME = "room2"
 
-TEST_ROOMS = [Room(ROOM1, Domain1, Height), Room(ROOM2, Domain2, Height)]
+# room1 = Room(ROOM1_NAME, Domain1, Height)
+# room2 = Room(ROOM2_NAME, Domain2, Height)
 
-
+test_rooms = [Room("room1", Domain1, Height), Room("room2", Domain2, Height)]
 
 
 def get_minimal_case_with_rooms():
-    case =  get_minimal_case()
-    case.add_zones(TEST_ROOMS)
+    case = get_minimal_case()
+    case.add_zones(test_rooms)
     return case
