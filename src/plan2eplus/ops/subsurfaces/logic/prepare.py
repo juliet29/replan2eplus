@@ -1,4 +1,3 @@
-from geomeppyupdated.geom.polygons import Polygon3D
 from plan2eplus.geometry.domain import Domain
 from plan2eplus.geometry.contact_points import calculate_corner_points
 from plan2eplus.ops.subsurfaces.interfaces import Dimension
@@ -75,8 +74,8 @@ def prepare_object(
 
     # HERE CHECK SUBSURF DOMAINS..
     compare_domain(main_surface_domain, subsurf_domain)
-    polygon_coords = calculate_corner_points(subsurf_domain).tuple_list
-    polygon = Polygon3D(polygon_coords)
+    # polygon_coords = calculate_corner_points(subsurf_domain).tuple_list
+    # polygon = Polygon3D(polygon_coords)
     # with logger.contextualize(loc="Checking createio of coords, wll 2D work?"):
     #     coords = calculate_corner_points(subsurf_domain).tuple_list
     #     logger.debug(coords)
@@ -104,7 +103,7 @@ def prepare_object(
         construction_name,
         *coords,
         *dims,
-        Polygon=polygon,
+        # Polygon=polygon,
     ).values
 
     if hasattr(idfobject, "Outside_Boundary_Condition_Object"):

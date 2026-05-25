@@ -4,19 +4,15 @@ from rich.pretty import pretty_repr
 from loguru import logger
 from omegaconf import OmegaConf
 
-from plan2eplus.cli.pretest.surfaces import test_surface_types
 from plan2eplus.ex.make import make_test_case
 from plan2eplus.ex.afn import AFNEdgeGroups as AFNEdgeGroups
 from plan2eplus.io.details import get_details_from_yaml
 from plan2eplus.ops.subsurfaces.idfobject import IDFDoor
-from plan2eplus.paths import BASE_PATH, ProjectPaths
+from plan2eplus.paths import BASE_PATH, ProjectPaths, StaticPaths
 from plan2eplus.ep_paths import EpConfig
 from utils4plans.logconfig import logset
 
 
-from plan2eplus.ex.subsurfaces import SubsurfaceInputExamples
-from plan2eplus.ex.main import Cases
-from plan2eplus.ops.subsurfaces.create import create_subsurfaces
 from rich import print
 
 app = App(name="studies")
@@ -24,14 +20,24 @@ app = App(name="studies")
 
 @app.command()
 def study_ss():
-    case = Cases().two_room
-    subsurfaces = create_subsurfaces(
-        SubsurfaceInputExamples.interior,
-        case.objects.surfaces,
-        case.objects.zones,
-        case.idf,
+
+    case = make_test_case(AFNEdgeGroups.A_ns)
+    subsurfs = case.objects.subsurfaces
+    dxf = case.idf.newidfobject("Output:Surfaces:Drawing".upper())
+    dxf.Report_Type = "DXF"
+    case.save_and_run(
+        output_path=StaticPaths.temp,
+        save=True,
+        run=True,
     )
-    return subsurfaces
+    # case = Cases().two_room
+    # subsurfaces = create_subsurfaces(
+    #     SubsurfaceInputExamples.interior,
+    #     case.objects.surfaces,
+    #     case.objects.zones,
+    #     case.idf,
+    # )
+    # prep_to_obj(case)
 
 
 @app.command()
@@ -65,11 +71,6 @@ def try_config():
     res = OmegaConf.merge(schema, conf, user_conf)
     print(OmegaConf.to_yaml(res))
     return res
-
-
-@app.command()
-def curr():
-    test_surface_types()
 
 
 @app.command()

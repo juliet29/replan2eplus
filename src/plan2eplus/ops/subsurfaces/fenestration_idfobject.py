@@ -1,17 +1,44 @@
 from dataclasses import dataclass
 
+from typing import Literal
+
+from geomeppyupdated.geom.polygons import Polygon3D
 from geomeppyupdated.idf import IDF
 from loguru import logger
 
 from plan2eplus.ops.base import IDFObject
-from plan2eplus.ops.init.idfobject import GlobalGeometryRules
 
 
 @dataclass
 class IDFFenestrationObject(IDFObject):
     Name: str = ""
-    Building_Surface_Name: str = ""
+    Surface_Type: Literal[
+        "Window", "Door", "GlassDoor", "TubularDaylightDome", "TubularDaylightDiffuser"
+    ] = "Window"
     Construction_Name: str = ""
+    Building_Surface_Name: str = ""
+    Outside_Boundary_Condition_Object: str = ""
+    View_Factor_to_Ground: str = "autocalculate"
+    Frame_and_Divider_Name: str = ""
+    Multiplier: float = 1.0
+    Number_of_Vertices: str = "autocalculate"
+    Vertex_1_X_coordinate: float = 0.0
+    Vertex_1_Y_coordinate: float = 0.0
+    Vertex_1_Z_coordinate: float = 0.0
+    Vertex_2_X_coordinate: float = 0.0
+    Vertex_2_Y_coordinate: float = 0.0
+    Vertex_2_Z_coordinate: float = 0.0
+    Vertex_3_X_coordinate: float = 0.0
+    Vertex_3_Y_coordinate: float = 0.0
+    Vertex_3_Z_coordinate: float = 0.0
+    Vertex_4_X_coordinate: float = 0.0
+    Vertex_4_Y_coordinate: float = 0.0
+    Vertex_4_Z_coordinate: float = 0.0
+    Polygon: Polygon3D | None = None
+
+    @property
+    def key(self):
+        return "FENESTRATIONSURFACE:DETAILED"
 
     # Starting_X_Coordinate: float = 0
     # Starting_Z_Coordinate: float = 0
@@ -49,17 +76,21 @@ class IDFFenestrationObject(IDFObject):
     #         self.get_surface(surfaces),
     #     )
     #
-    def write_subsurface(self, idf: IDF):
+    def write(self, idf: IDF):
         vals = {k: v for k, v in self.values.items() if v}
         logger.debug(vals)
         polygon = vals.pop("Polygon")
         logger.debug(polygon)
+        # remove vertex values -> have these be set as coords..
+        vertex_keys = [i for i in vals.keys() if "Vertex" in i]
+        for k in vertex_keys:
+            vals.pop(k)
         logger.debug(vals)
         # raise Exception("bye")
 
         obj = idf.newidfobject(self.key, **vals)
 
-        ggr = GlobalGeometryRules().get_idf_objects(idf)
+        # ggr = GlobalGeometryRules().get_idf_objects(idf)
         obj.setcoords(polygon, ggr=None)
 
         # TODO: add get a polygon and set the values..
