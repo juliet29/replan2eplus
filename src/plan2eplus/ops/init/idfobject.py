@@ -42,6 +42,8 @@ class GlobalGeometryRules(IDFObject):
     Starting_Vertex_Position: str = "UpperLeftCorner"
     Vertex_Entry_Direction: str = "CounterClockwise"
     Coordinate_System: str = "World"
+    Daylighting_Reference_Point_Coordinate_System: str = ""
+    Rectangular_Surface_Coordinate_System: str = ""
 
     @property
     def key(self):

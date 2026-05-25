@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from plan2eplus.geometry.coords import Coord
-from typing import Literal, NamedTuple
+from plan2eplus.geometry.coords import Coord, Coordinate3D
+from typing import Literal
 
 from plan2eplus.geometry.domain import Domain
 
@@ -20,7 +20,7 @@ class CardinalPoints:
 
     @property
     def dict_(self):
-        # TODO make this consistent => values or something else.. 
+        # TODO make this consistent => values or something else..
         return {
             "NORTH": self.NORTH,
             "EAST": self.EAST,
@@ -47,6 +47,21 @@ class CornerPoints:
         # this is clock wise not counter clockwise
         # return [self.NORTH_EAST, self.SOUTH_EAST, self.SOUTH_WEST, self.NORTH_WEST]
         return [self.NORTH_EAST, self.NORTH_WEST, self.SOUTH_WEST, self.SOUTH_EAST]
+
+    @property
+    def tuple_list(self):
+        return [i.as_tuple for i in self.coord_list]
+
+
+@dataclass
+class CornerPoints3D:
+    NORTH_EAST: Coordinate3D
+    SOUTH_EAST: Coordinate3D
+    SOUTH_WEST: Coordinate3D
+    NORTH_WEST: Coordinate3D
+
+    def __getitem__(self, item: CornerEntries) -> Coord:
+        return getattr(self, item)
 
     @property
     def tuple_list(self):
