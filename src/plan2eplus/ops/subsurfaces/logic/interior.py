@@ -1,4 +1,4 @@
-from geomeppyupdated import IDF
+from geomeppyupdated.idf import IDF
 from loguru import logger
 from rich import print
 
@@ -97,7 +97,7 @@ def create_subsurface_for_interior_edge(
 
     # main_obj.write(idf)
     try:
-        main_obj.write(idf)
+        main_obj.write_subsurface(idf)
     except AttributeError:
         # TODO -> do this with loguru
         print(main_obj.values)

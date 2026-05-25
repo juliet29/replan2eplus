@@ -1,11 +1,14 @@
 from dataclasses import dataclass
 
 from expression.collections import Seq
-from geomeppyupdated import IDF
+from geomeppyupdated.idf import IDF
+from geomeppyupdated.geom.polygons import Polygon3D
+from loguru import logger
 from utils4plans.lists import chain_flatten, get_unique_one
 
 from plan2eplus.errors import InvalidObjectError, NonExistentEpBunchTypeError
 from plan2eplus.ops.base import IDFObject
+from plan2eplus.ops.init.idfobject import GlobalGeometryRules
 from plan2eplus.ops.subsurfaces.ezobject import Subsurface
 from plan2eplus.ops.subsurfaces.interfaces import SubsurfaceType
 from plan2eplus.ops.surfaces.ezobject import Surface
@@ -20,6 +23,7 @@ class IDFSubsurfaceBase(IDFObject):
     Starting_Z_Coordinate: float = 0
     Length: float = 0
     Height: float = 0
+    Polygon: Polygon3D | None = None
 
     @property
     def type_(self) -> SubsurfaceType: ...
@@ -51,9 +55,20 @@ class IDFSubsurfaceBase(IDFObject):
             self.get_surface(surfaces),
         )
 
-    def write(self, idf: IDF):
+    def write_subsurface(self, idf: IDF):
         vals = {k: v for k, v in self.values.items() if v}
-        idf.newidfobject(self.key, **vals)
+        logger.debug(vals)
+        polygon = vals.pop("Polygon")
+        logger.debug(polygon)
+        logger.debug(vals)
+        # raise Exception("bye")
+
+        obj = idf.newidfobject(self.key, **vals)
+
+        ggr = GlobalGeometryRules().get_idf_objects(idf)
+        obj.setcoords(polygon, ggr=None)
+
+        # TODO: add get a polygon and set the values..
         return idf
 
 

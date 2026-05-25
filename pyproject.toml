@@ -44,12 +44,14 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = ["zensical>=0.0.38"]
 # utils4plans = { path = "../utils4plans" }
-# geomeppy = { path = "../geomeppy" }
+# geomeppyupdated = { path = "../geomeppyupdated", editable = true }
+# plyze = { path = "../../../plyze", editable = true }
 
 [tool.uv]
-override-dependencies = [
-    "click>=8.1.7",
-]
+override-dependencies = ["click>=8.1.7"]
+
+[tool.uv.sources]
+geomeppyupdated = { path = "../geomeppyupdated", editable = true }
 
 [project.scripts]
 p2ep = "plan2eplus.cli.main:main"

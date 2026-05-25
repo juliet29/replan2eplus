@@ -7,8 +7,10 @@ update-deps:
   uv add ~/_UILCode/gqe-phd/fpopt/utils4plans/
   uv add ~/_UILCode/gqe-phd/fpopt/geomeppy/
 
-update-geomeppy:
-  uv add ~/_UILCode/gqe-phd/fpopt/geomeppy/
+add-local-geomeppy:
+  uv add --editable "geomeppyupdated @ /Users/julietnwagwuume-ezeoke/_UILCode/gqe-phd/fpopt/geomeppyupdated"
+# update-geomeppy:
+#   uv add ~/_UILCode/gqe-phd/fpopt/geomeppy/
 
 
 test-ops:

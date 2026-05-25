@@ -1,5 +1,5 @@
 from typing import Any, Literal, Sequence
-from geomeppyupdated import IDF
+from geomeppyupdated.idf import IDF
 from eppy.bunch_subclass import EpBunch
 from dataclasses import dataclass
 from utils4plans.lists import get_unique_one
@@ -12,6 +12,9 @@ Identifiers = Literal["Name", "Surface_Name"]
 def get_object_description(object: EpBunch):
     d = {k: v for k, v in zip(object.fieldnames, object.fieldvalues)}
     d.pop("key")
+    # TODO: not sure how safe this is..
+    if "Polygon" in d.keys():
+        d.pop("Polygon")
     return d
 
 
@@ -89,9 +92,9 @@ class IDFObject:
         object = self.get_one_idf_object(idf, object_name, identifier)
         # TODO are fieldnames a better fit here?
         keys = list(self.values.keys())
-        assert param in keys, (
-            f"{param} does not exist in {keys} for object named '{object_name} with type {type(self)}"
-        )
+        assert (
+            param in keys
+        ), f"{param} does not exist in {keys} for object named '{object_name} with type {type(self)}"
         object[param] = new_value
 
     def write(self, idf: IDF):
@@ -108,9 +111,9 @@ class IDFObject:
 
 
 def check_has_identifier(obj: EpBunch, param_name: Identifiers):
-    assert param_name in obj.fieldnames, (
-        f"No attribute of {param_name} for epbunch with key {obj.key}"
-    )
+    assert (
+        param_name in obj.fieldnames
+    ), f"No attribute of {param_name} for epbunch with key {obj.key}"
     return True
 
 

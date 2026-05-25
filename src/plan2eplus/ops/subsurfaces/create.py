@@ -24,8 +24,7 @@ def create_subsurfaces(
     idf: IDF,
 ):
     idf_subsurfaces = read_subsurfaces(idf)
-    # NOTE: have not defined all the possible types of subsurfaces, so error will result if the type is of say "Window:Interzone"
-    # if idf_subsurfaces:
+    # NOTE: have not defined all the possible types of subsurfaces, so error will result if the type is of say "Window:Interzone" -> can't have interior windows
 
     existing_subsurfaces = []
     if idf_subsurfaces:
@@ -35,12 +34,6 @@ def create_subsurfaces(
     # NOTE: dont have to update surface subsurface here bc idf already knows the relations
 
     if inputs:
-        # interior_subsurfaces = chain_flatten(
-        #     [
-        #         create_subsurface_for_interior_edge(edge, detail, zones, surfaces, idf)
-        #         for edge, detail in inputs.zone_pairs
-        #     ]
-        # )
 
         interior_subsurfaces = []
         for edge, detail in inputs.zone_pairs:

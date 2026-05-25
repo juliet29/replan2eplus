@@ -1,3 +1,4 @@
+from geomeppyupdated.geom.polygons import Polygon3D
 from plan2eplus.geometry.domain import Domain
 from plan2eplus.geometry.contact_points import calculate_corner_points
 from plan2eplus.ops.subsurfaces.interfaces import Dimension
@@ -61,6 +62,7 @@ def get_idf_subsurface_object(detail: Detail, is_interior: bool):
             )
 
 
+# def prepare_geometry(surface: Surface, )
 # TODO this goes to logic! TODO number files in logic _04_indiv_subsurf
 def prepare_object(
     surface_name: str,
@@ -70,11 +72,21 @@ def prepare_object(
     nb_surface_name: str,
     is_interior,
 ):
+
     # HERE CHECK SUBSURF DOMAINS..
     compare_domain(main_surface_domain, subsurf_domain)
-
+    polygon_coords = calculate_corner_points(subsurf_domain).tuple_list
+    polygon = Polygon3D(polygon_coords)
+    # with logger.contextualize(loc="Checking createio of coords, wll 2D work?"):
+    #     coords = calculate_corner_points(subsurf_domain).tuple_list
+    #     logger.debug(coords)
+    #     p = Polygon3D(coords)
+    #     logger.debug(p)
+    # raise Exception("Done with Coords")
+    #
     subsurf_coord = calculate_corner_points(subsurf_domain).SOUTH_WEST
     surf_coord = calculate_corner_points(main_surface_domain).SOUTH_WEST
+    # TODO: this should be in its own function..
     coords = (
         subsurf_coord.x - surf_coord.x,
         subsurf_coord.y - surf_coord.y,
@@ -92,13 +104,15 @@ def prepare_object(
         construction_name,
         *coords,
         *dims,
+        Polygon=polygon,
     ).values
 
     if hasattr(idfobject, "Outside_Boundary_Condition_Object"):
         return idfobject(
             **values,
-            Outside_Boundary_Condition_Object=create_ss_name(nb_surface_name, detail), # pyright: ignore[reportCallIssue]
+            Outside_Boundary_Condition_Object=create_ss_name(
+                nb_surface_name, detail
+            ),  # pyright: ignore[reportCallIssue]
         )
     else:
         return idfobject(**values)
-

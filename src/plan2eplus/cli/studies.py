@@ -1,4 +1,6 @@
 from cyclopts import App
+from geomeppyupdated.geom.polygons import Polygon3D
+from rich.pretty import pretty_repr
 from loguru import logger
 from omegaconf import OmegaConf
 
@@ -6,16 +8,48 @@ from plan2eplus.cli.pretest.surfaces import test_surface_types
 from plan2eplus.ex.make import make_test_case
 from plan2eplus.ex.afn import AFNEdgeGroups as AFNEdgeGroups
 from plan2eplus.io.details import get_details_from_yaml
+from plan2eplus.ops.subsurfaces.idfobject import IDFDoor
 from plan2eplus.paths import BASE_PATH, ProjectPaths
 from plan2eplus.ep_paths import EpConfig
 from utils4plans.logconfig import logset
+
+
+from plan2eplus.ex.subsurfaces import SubsurfaceInputExamples
+from plan2eplus.ex.main import Cases
+from plan2eplus.ops.subsurfaces.create import create_subsurfaces
+from rich import print
 
 app = App(name="studies")
 
 
 @app.command()
+def study_ss():
+    case = Cases().two_room
+    subsurfaces = create_subsurfaces(
+        SubsurfaceInputExamples.interior,
+        case.objects.surfaces,
+        case.objects.zones,
+        case.idf,
+    )
+    return subsurfaces
+
+
+@app.command()
 def study_case():
     case = make_test_case(AFNEdgeGroups.A_ew)
+    subsurfs = case.objects.subsurfaces
+    ss = subsurfs[-1]
+    idf_ss = IDFDoor.read_by_name(case.idf, [ss.subsurface_name])[0]
+
+    logger.debug(pretty_repr(idf_ss))
+
+    res = Polygon3D(idf_ss)
+    logger.debug(res)
+
+    # case.idf.to_obj()
+    # return case
+    return
+
     zone_names = [i.zone_name for i in case.objects.zones]
     logger.info(zone_names)
 

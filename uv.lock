@@ -416,7 +416,7 @@ wheels = [
 [[package]]
 name = "geomeppyupdated"
 version = "0.1.0"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = "../geomeppyupdated" }
 dependencies = [
     { name = "eppy" },
     { name = "esoreader" },
@@ -428,9 +428,18 @@ dependencies = [
     { name = "shapely" },
     { name = "transforms3d" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/99/f2/90a1eff4a1e342c1b1176112029d05c314b745a3c35a3411229cecc5d38a/geomeppyupdated-0.1.0.tar.gz", hash = "sha256:44cd472befb334d729ea6dacb382ab1009e16f97c885d1c9a369d5983b5d3292", size = 29561, upload-time = "2026-02-14T22:38:37.003Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/ce/ec/b11ab2718efd48fca023305a230760c86c5ae491361b59a74b9241e9c837/geomeppyupdated-0.1.0-py3-none-any.whl", hash = "sha256:edbd319ec9c2bf6b65a2e9a4447564e6e9fe26ac53769f306e92a7c122ef8f30", size = 38204, upload-time = "2026-02-14T22:38:35.754Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "eppy", specifier = ">=0.5.63" },
+    { name = "esoreader", specifier = ">=1.2.3" },
+    { name = "loguru", specifier = ">=0.7.3" },
+    { name = "matplotlib", specifier = ">=3.10.8" },
+    { name = "pyclipper", specifier = ">=1.4.0" },
+    { name = "pypoly2tri", specifier = ">=0.0.3" },
+    { name = "pytest", specifier = ">=9.0.2" },
+    { name = "shapely", specifier = ">=2.1.2" },
+    { name = "transforms3d", specifier = ">=0.4.2" },
 ]
 
 [[package]]
@@ -1040,7 +1049,7 @@ requires-dist = [
     { name = "cyclopts", specifier = ">=4.4.6" },
     { name = "eppy", specifier = ">=0.5.63" },
     { name = "expression", specifier = ">=5.6.0" },
-    { name = "geomeppyupdated", specifier = ">=0.1.0" },
+    { name = "geomeppyupdated", editable = "../geomeppyupdated" },
     { name = "ladybug-core", specifier = ">=0.44.19" },
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "matplotlib", specifier = ">=3.10.8" },
