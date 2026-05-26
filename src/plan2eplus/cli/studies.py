@@ -4,25 +4,32 @@ from rich.pretty import pretty_repr
 from loguru import logger
 from omegaconf import OmegaConf
 
-from plan2eplus.cli.pretest.study_to_obj import prep_to_obj
+from plan2eplus.viz3d.obj_create import prep_to_obj
 from plan2eplus.ex.make import make_test_case
 from plan2eplus.ex.afn import AFNEdgeGroups as AFNEdgeGroups
 from plan2eplus.io.details import get_details_from_yaml
 from plan2eplus.ops.subsurfaces.idfobject import IDFDoor
-from plan2eplus.paths import BASE_PATH, ProjectPaths
+from plan2eplus.paths import BASE_PATH, ProjectPaths, VizTestPaths
 from plan2eplus.ep_paths import EpConfig
 from utils4plans.logconfig import logset
 
 
 from rich import print
 
+from plan2eplus.viz3d.obj_readin import read_building
+
 
 app = App(name="studies")
 
 
 @app.command()
-def study_ss():
+def study_obj():
+    obj = read_building(VizTestPaths.obj)
+    return obj
 
+
+@app.command()
+def study_ss():
     case = make_test_case(AFNEdgeGroups.A_ns)
     prep_to_obj(case)
 

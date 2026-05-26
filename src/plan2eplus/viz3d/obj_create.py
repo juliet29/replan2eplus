@@ -98,3 +98,5 @@ def prep_to_obj(case: EZ):
         idf.removeidfobject(ep)
 
     obj = idf.to_obj("test.obj")
+    # TODO: add path as a variable..
+    # TODO: should clear IDF as a sign that can't use it again => now corruped untill inocorporate Fenestration method fully..

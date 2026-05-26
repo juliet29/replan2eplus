@@ -192,8 +192,8 @@ GLOBALGEOMETRYRULES,
     UpperLeftCorner,          !- Starting Vertex Position
     CounterClockwise,         !- Vertex Entry Direction
     World,                    !- Coordinate System
-    Relative,                 !- Daylighting Reference Point Coordinate System
-    Relative;                 !- Rectangular Surface Coordinate System
+    ,                         !- Daylighting Reference Point Coordinate System
+    ;                         !- Rectangular Surface Coordinate System
 
 ZONE,
     Block `room1` Storey 0,    !- Name

@@ -39,3 +39,8 @@ class InputConfigPaths:
 class ProjectPaths:
     input_config = InputConfigPaths
     pass
+
+
+class VizTestPaths:
+    obj = BASE_PATH / "test.obj"
+    mtl = BASE_PATH / "test.mtl"
