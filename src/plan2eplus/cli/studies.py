@@ -1,3 +1,5 @@
+from pathlib import Path
+from plan2eplus.results.sql import get_qoi
 from cyclopts import App
 from geomeppyupdated.geom.polygons import Polygon3D
 from rich.pretty import pretty_repr
@@ -6,14 +8,12 @@ from omegaconf import OmegaConf
 
 from plan2eplus.ex.paths import ExamplePaths
 from plan2eplus.ezcase.ez import EZ
-from plan2eplus.viz3d.arrow_curve import ArrowHeadLoc, create_segmented_arrow
-from plan2eplus.viz3d.arrows import gather_data, make_case_arrows
 from plan2eplus.viz3d.obj_create import prep_to_obj
 from plan2eplus.ex.make import make_test_case
 from plan2eplus.ex.afn import AFNEdgeGroups as AFNEdgeGroups
 from plan2eplus.io.details import get_details_from_yaml
 from plan2eplus.ops.subsurfaces.idfobject import IDFDoor
-from plan2eplus.paths import BASE_PATH, Constants, ProjectPaths, VizTestPaths
+from plan2eplus.paths import BASE_PATH, Constants, ProjectPaths
 from plan2eplus.ep_paths import EpConfig
 from utils4plans.logconfig import logset
 
@@ -32,27 +32,25 @@ class StudyPaths:
     sql_path = base_path / Constants.sql_path
     obj_path = base_path / Constants.obj_path
     case = EZ(idf_path)
+    sample_in_space_names = "DOOR__BLOCK `ROOM1` STOREY 0 WALL 0001"
+
+
+def get_sample_data(sql_path: Path, hour: int = 12):
+    flow_12 = get_qoi("AFN Linkage Node 1 to Node 2 Volume Flow Rate", sql_path)
+    flow_21 = get_qoi("AFN Linkage Node 2 to Node 1 Volume Flow Rate", sql_path)
+    combined_flow = flow_12.select_time(hour) - flow_21.select_time(hour)
+    return combined_flow
 
 
 @app.command()
 def study_obj():
-    obj = read_building(StudyPaths.case, StudyPaths.sql_path, StudyPaths.obj_path)
+    data = get_sample_data(StudyPaths.sql_path)
+    # cmap, norm, value_signs = make_colormaps(data)
+    #
+    # return color_and_drn(data, StudyPaths.sample_in_space_names, cmap, norm)
+    #
+    obj = read_building(StudyPaths.case, StudyPaths.obj_path, data)
     return obj
-    pts = [(1, 0, 1), (1, 1, 1), (0.5, 0.5, 1)]
-    scene = create_segmented_arrow(*pts, arrow_loc=ArrowHeadLoc.START)
-    print("hello!")
-    return scene
-    obj = read_building(StudyPaths.case, StudyPaths.sql_path, StudyPaths.obj_path)
-    return make_case_arrows(StudyPaths.case, StudyPaths.sql_path)
-    return gather_data(StudyPaths.case, StudyPaths.sql_path, 12)
-    # case = make_test_case(AFNEdgeGroups.A_ns)
-
-    # logger.debug(case.objects)
-    # return
-    obj = read_building(VizTestPaths.obj, case)
-
-    make_case_arrows(case)
-    # return obj
 
 
 @app.command()

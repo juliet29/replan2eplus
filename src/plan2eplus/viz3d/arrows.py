@@ -1,5 +1,5 @@
 import math
-from pathlib import Path
+from matplotlib.colors import Colormap, Normalize
 import xarray as xr
 
 from loguru import logger
@@ -10,7 +10,6 @@ from plan2eplus.geometry.domain import (
 )
 from plan2eplus.ops.subsurfaces.interfaces import Edge
 from plan2eplus.ops.zones.ezobject import Zone
-from plan2eplus.results.sql import get_qoi
 from plan2eplus.visuals.data.colorbars import data_norm
 from plan2eplus.visuals.domains import compute_multidomain, expand_domain
 from plan2eplus.visuals.transforms import subsurface_to_points
@@ -28,67 +27,80 @@ def get_arrow_coords(
 ):
 
     points = subsurface_to_points(domain, edge, zones, cardinal_coords)
-    return [(*p.as_tuple, arrow_height) for p in points]
+    point_names = ["p_start", "p_mid", "p_end"]
+    return {name: (*p.as_tuple, arrow_height) for name, p in zip(point_names, points)}
 
 
-def handle_colors(data: xr.DataArray):
+def make_colormaps(data: xr.DataArray):
     cmap, norm = data_norm(abs(data).values)
-    value_signs = [int(math.copysign(1, i)) for i in data.values]
-
-    colors = cmap(norm(data))
-    logger.debug(colors)
-    return cmap, norm, value_signs
+    return cmap, norm
 
 
-def gather_data(case: EZ, sql_path: Path, hour: int):
-    flow_12 = get_qoi("AFN Linkage Node 1 to Node 2 Volume Flow Rate", sql_path)
-    flow_21 = get_qoi("AFN Linkage Node 2 to Node 1 Volume Flow Rate", sql_path)
-    combined_flow = flow_12.select_time(hour) - flow_21.select_time(hour)
+def gather_data(case: EZ, data: xr.DataArray):
     data_subsurfaces = [
         i
         for i in case.objects.subsurfaces
-        if i.subsurface_name.upper() in combined_flow.space_names.values
+        if i.subsurface_name.upper() in data.space_names.values
     ]
 
-    return combined_flow, data_subsurfaces
+    return data_subsurfaces
 
 
-def make_case_arrows(case: EZ, sql_path: Path):
-    # TODO: the case should passed in as path..
+def color_and_drn(
+    data: xr.DataArray, subsurface_name: str, cmap: Colormap, norm: Normalize
+):
+    value = data.sel(space_names=subsurface_name.upper())
+    norm_val = norm(abs(value))
+    logger.debug(norm_val)
+    color = cmap(norm_val)
+    direction = ArrowHeadLoc(int(math.copysign(1, value)))
+
+    def remap(value, lo=0.02, hi=0.05):
+        return lo + (hi - lo) * value
+
+    radius = remap(norm_val)
+    logger.debug(radius)
+    # "radius": norm_val
+    return {
+        "color": color,
+        "arrow_loc": direction,
+        "radius": radius,
+        # "radius": remap()
+    }
+
+
+def make_cardinal_points(zones: list[Zone]):
     cardinal_expansion_factor = 1.8
-
-    data, data_subsurfaces = gather_data(case, sql_path, 12)  # TODO: unhardcode this..
-    cmap, norm, value_signs = handle_colors(data)
-
-    zones = case.objects.zones
-    z0 = zones[0]
-    surf = [i for i in z0.surfaces if i.surface_type == "wall"][0]
-    assert isinstance(surf.domain, Domain)
-    height = surf.domain.vert_range.max
-    logger.debug(height)
-    arrow_height = (
-        height / 2
-    )  # TODO: dummy height for now -> needs to go through subsurfaces
-
     total_domain = compute_multidomain([i.domain for i in zones])
     cardinal_domain = expand_domain(total_domain, cardinal_expansion_factor)
     cardinal_points = calculate_cardinal_points(cardinal_domain)
+    return cardinal_points
 
-    # subsurfs = case.objects.subsurfaces
-    # surf0 = subsurfs[0]
+
+def make_case_arrows(case: EZ, data: xr.DataArray):
+    # TODO: the case should passed in as path..
+
+    data_subsurfaces = gather_data(case, data)  # TODO: unhardcode this..
+    cmap, norm = make_colormaps(data)
+
+    zones = case.objects.zones
+    cardinal_points = make_cardinal_points(zones)
+
     coords = [
-        get_arrow_coords(surf.domain, surf.edge, zones, cardinal_points, arrow_height)
+        get_arrow_coords(
+            surf.domain,
+            surf.edge,
+            zones,
+            cardinal_points,
+            surf.domain.vert_range.midpoint,
+        )
         for surf in data_subsurfaces
     ]
-    logger.debug(coords)
-    # coords0 = get_arrow_coords(
-    #     surf0.domain, surf0.edge, zones, cardinal_points, arrow_height
-    # )
-    # logger.debug(coords0)
 
     arrows = [
-        create_segmented_arrow(*c, arrow_loc=ArrowHeadLoc(v), radius=0.05)
-        for c, v in zip(coords, value_signs)
+        create_segmented_arrow(
+            **c, **color_and_drn(data, v.subsurface_name, cmap, norm)
+        )
+        for c, v in zip(coords, data_subsurfaces)
     ]
-    logger.debug(arrows)
     return arrows

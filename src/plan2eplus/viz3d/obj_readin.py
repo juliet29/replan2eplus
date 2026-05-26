@@ -1,8 +1,7 @@
 from pathlib import Path
-from loguru import logger
+import xarray as xr
 import trimesh
 from trimesh.visual.texture import TextureVisuals
-from trimesh.exchange.obj import load_obj
 from trimesh.visual.color import ColorVisuals
 from trimesh.visual.material import SimpleMaterial
 
@@ -17,14 +16,12 @@ def make_transparent(scene: trimesh.Scene, alpha: int = 128) -> trimesh.Scene:
             assert isinstance(viz, ColorVisuals), f"{key} has type {type(viz)}"
 
             viz.face_colors[:, 3] = alpha
-            logger.debug(f"Set face colors for {key}")
             # viz.main_color = [*color[:3], 128]
             # mesh.visual.vertex_colors[:, 3] = alpha
         except AssertionError:
             assert isinstance(viz, TextureVisuals), f"{key} has type {type(viz)}"
             material = mesh.visual.material
             assert isinstance(material, SimpleMaterial)
-            logger.debug((key, material))
             diffuse_color = mesh.visual.material.diffuse
 
             # Change the alpha channel (index 3) to 128 (~50% transparent)
@@ -35,12 +32,12 @@ def make_transparent(scene: trimesh.Scene, alpha: int = 128) -> trimesh.Scene:
     return scene
 
 
-def read_building(case: EZ, sql_path: Path, obj_path: Path):
+def read_building(case: EZ, obj_path: Path, data: xr.DataArray):
     building = trimesh.load(obj_path)
     assert isinstance(building, trimesh.Scene)
     building = make_transparent(building, alpha=30)
 
-    arrow_scenes = make_case_arrows(case, sql_path)
+    arrow_scenes = make_case_arrows(case, data)
 
     final_scene = trimesh.Scene()
     for name, geom in building.geometry.items():

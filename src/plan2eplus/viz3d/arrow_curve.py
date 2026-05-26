@@ -1,6 +1,5 @@
 from enum import Enum
 import numpy as np
-from loguru import logger
 import shapely.geometry
 import trimesh
 
@@ -73,8 +72,8 @@ def create_segmented_arrow(
     p_mid,
     p_end,
     arrow_loc: ArrowHeadLoc,
-    radius: float = 0.02,
     color: list = [255, 0, 0, 255],
+    radius: float = 0.02,
 ):
     """Creates a 3D arrow mesh composed of a bezier tube and a cone head."""
     p_start = np.array(p_start, dtype=float)
@@ -91,6 +90,5 @@ def create_segmented_arrow(
     scene.add_geometry(tube)
     scene.add_geometry(arrow_head)
 
-    logger.debug(scene)
     # scene.show()
     return scene

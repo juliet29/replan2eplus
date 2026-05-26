@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import NamedTuple
 
-from loguru import logger
 from matplotlib.lines import Line2D
 from matplotlib.patches import Polygon
 
@@ -28,7 +27,6 @@ class MPlData(NamedTuple):
 
 def split_coords(coords: list[Coord]):
     mpldata = MPlData([i.x for i in coords], [i.y for i in coords])
-    logger.debug(mpldata)
     return mpldata
 
 
@@ -100,7 +98,6 @@ def subsurface_to_points(
         coord_b = zone_b.domain.centroid
 
     points = [coord_a, middle_coord, coord_b]
-    logger.debug(points)
     return points
 
 
