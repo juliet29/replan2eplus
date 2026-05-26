@@ -1,3 +1,4 @@
+from pathlib import Path
 from loguru import logger
 from geomeppyupdated.geom.polygons import Polygon3D
 from rich.pretty import pretty_repr
@@ -55,7 +56,8 @@ def domain_to_3D_coords(domain: Domain, idf: IDF):
     return coords
 
 
-def prep_to_obj(case: EZ):
+def prep_to_obj(idf_path: Path, obj_path: Path):
+    case = EZ(idf_path)
     # TODO: need to make sure dont change underlying IDF! In case need to use again..  test the eppy copy method will work.. may need to re-init as a geomeppy IDF
     # case = deepcopy(case_)  # will make changes to copy of idf
     idf = case.idf
@@ -97,6 +99,6 @@ def prep_to_obj(case: EZ):
     for ep in epbunches:
         idf.removeidfobject(ep)
 
-    obj = idf.to_obj("test.obj")
+    obj = idf.to_obj(str(obj_path))
     # TODO: add path as a variable..
     # TODO: should clear IDF as a sign that can't use it again => now corruped untill inocorporate Fenestration method fully..

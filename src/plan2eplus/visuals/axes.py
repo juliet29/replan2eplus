@@ -11,7 +11,7 @@ from plan2eplus.geometry.ortho_domain import OrthoDomain
 from plan2eplus.visuals.transforms import (
     domain_to_line,
     domain_to_mpl_polygon,
-    subsurface_to_connection_line,
+    subsurface_to_mpl_connection_line,
 )
 from plan2eplus.visuals.styles.artists import (
     LineStyles,
@@ -63,7 +63,7 @@ def add_connection_lines(
     axes: Axes,
 ):
     def update(domain, edge, style):
-        line = subsurface_to_connection_line(domain, edge, zones, cardinal_coords)
+        line = subsurface_to_mpl_connection_line(domain, edge, zones, cardinal_coords)
         line.set(**style.values)
         axes.add_artist(line)
         return line

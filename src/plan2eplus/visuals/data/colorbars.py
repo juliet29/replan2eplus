@@ -106,5 +106,12 @@ def flow_colorbar(data: list[float] | np.ndarray, ax: Axes):
     return bar, cmap, norm
 
 
+def data_norm(data: list[float] | np.ndarray):
+    cmap = mpl.colormaps["PuBu"]
+    min_, max_ = min(data), max(data)
+    norm = Normalize(vmin=min_, vmax=max_)
+    return cmap, norm
+
+
 def assemble_components():
     pass

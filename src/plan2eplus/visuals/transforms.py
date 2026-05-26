@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import NamedTuple
 
+from loguru import logger
 from matplotlib.lines import Line2D
-from matplotlib.patches import Polygon, Rectangle
+from matplotlib.patches import Polygon
 
 from plan2eplus.errors import IDFMisunderstandingError
 from plan2eplus.geometry.contact_points import CardinalPoints, calculate_corner_points
@@ -26,7 +27,9 @@ class MPlData(NamedTuple):
 
 
 def split_coords(coords: list[Coord]):
-    return MPlData([i.x for i in coords], [i.y for i in coords])
+    mpldata = MPlData([i.x for i in coords], [i.y for i in coords])
+    logger.debug(mpldata)
+    return mpldata
 
 
 @dataclass
@@ -77,7 +80,7 @@ def domain_to_line(domain: Domain):
 
 
 # this is a pretty generic fx -> utils4plans -> filter, get1 throw error
-def subsurface_to_connection_line(
+def subsurface_to_points(
     domain: Domain,
     edge: Edge,
     zones: list[Zone],
@@ -88,7 +91,7 @@ def subsurface_to_connection_line(
     middle_coord = Coord(*domain_to_line(domain).centroid)
 
     zone_a = get_zones(space_a, zones)
-    # TODO define centroid as centroid of bounding box..
+
     coord_a = zone_a.domain.centroid
     if space_b in WallNormalNamesList:
         coord_b = cardinal_coords.dict_[space_b]
@@ -97,7 +100,15 @@ def subsurface_to_connection_line(
         coord_b = zone_b.domain.centroid
 
     points = [coord_a, middle_coord, coord_b]
+    logger.debug(points)
+    return points
+
+
+def subsurface_to_mpl_connection_line(
+    domain: Domain,
+    edge: Edge,
+    zones: list[Zone],
+    cardinal_coords: CardinalPoints,
+):
+    points = subsurface_to_points(domain, edge, zones, cardinal_coords)
     return Line2D(*split_coords(points))
-
-
-# TODO this is kind of its own thing!

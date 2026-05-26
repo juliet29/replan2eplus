@@ -17,6 +17,7 @@ class Constants:
     results_location = "results"
     sql_path = "results/eplusout.sql"
     schedule_location = "schedules"
+    obj_path = "out.obj"
 
 
 # TODO: put this in config..
