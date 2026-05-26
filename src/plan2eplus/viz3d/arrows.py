@@ -14,7 +14,7 @@ from plan2eplus.results.sql import get_qoi
 from plan2eplus.visuals.data.colorbars import data_norm
 from plan2eplus.visuals.domains import compute_multidomain, expand_domain
 from plan2eplus.visuals.transforms import subsurface_to_points
-from plan2eplus.viz3d.arrow_mesh import create_segmented_arrow
+from plan2eplus.viz3d.arrow_curve import ArrowHeadLoc, create_segmented_arrow
 
 
 # TODO: dont think a cylinder is needed.. maybe better to do flat shape if possible ? or rectnagle => decrease the resolution..
@@ -55,7 +55,7 @@ def gather_data(case: EZ, sql_path: Path, hour: int):
 
 def make_case_arrows(case: EZ, sql_path: Path):
     # TODO: the case should passed in as path..
-    cardinal_expansion_factor = 1.2
+    cardinal_expansion_factor = 1.8
 
     data, data_subsurfaces = gather_data(case, sql_path, 12)  # TODO: unhardcode this..
     cmap, norm, value_signs = handle_colors(data)
@@ -86,6 +86,9 @@ def make_case_arrows(case: EZ, sql_path: Path):
     # )
     # logger.debug(coords0)
 
-    arrows = [create_segmented_arrow(*c, radius=0.05) for c in coords]
+    arrows = [
+        create_segmented_arrow(*c, arrow_loc=ArrowHeadLoc(v), radius=0.05)
+        for c, v in zip(coords, value_signs)
+    ]
     logger.debug(arrows)
     return arrows

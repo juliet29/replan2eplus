@@ -36,12 +36,20 @@ def make_transparent(scene: trimesh.Scene, alpha: int = 128) -> trimesh.Scene:
 
 
 def read_building(case: EZ, sql_path: Path, obj_path: Path):
-    scene = trimesh.load(obj_path)
-    assert isinstance(scene, trimesh.Scene)
-    scene = make_transparent(scene)
+    building = trimesh.load(obj_path)
+    assert isinstance(building, trimesh.Scene)
+    building = make_transparent(building, alpha=30)
 
-    arrow_mesh = make_case_arrows(case, sql_path)
-    final_scene = trimesh.util.concatenate([scene] + arrow_mesh)
+    arrow_scenes = make_case_arrows(case, sql_path)
+
+    final_scene = trimesh.Scene()
+    for name, geom in building.geometry.items():
+        if name == "roof":
+            continue
+        final_scene.add_geometry(geom, geom_name=name)
+    for arrow_scene in arrow_scenes:
+        for name, geom in arrow_scene.geometry.items():
+            final_scene.add_geometry(geom, geom_name=name)
+
     final_scene.show()
     return final_scene
-    scene = load_obj(file_obj=obj_path, group_material=False, skip_materials=True)

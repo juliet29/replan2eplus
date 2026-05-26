@@ -36,6 +36,8 @@ class StudyPaths:
 
 @app.command()
 def study_obj():
+    obj = read_building(StudyPaths.case, StudyPaths.sql_path, StudyPaths.obj_path)
+    return obj
     pts = [(1, 0, 1), (1, 1, 1), (0.5, 0.5, 1)]
     scene = create_segmented_arrow(*pts, arrow_loc=ArrowHeadLoc.START)
     print("hello!")

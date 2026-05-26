@@ -1,7 +1,7 @@
 from enum import Enum
 import numpy as np
 from loguru import logger
-from trimesh.path.entities import Bezier
+import shapely.geometry
 import trimesh
 
 
@@ -32,39 +32,65 @@ def align_cone_to_direction(
     return cone
 
 
-def create_arrow_head(pt, drn: np.ndarray, radius=0.01, len: float = 0.25):
+def sample_quadratic_bezier(
+    p0: np.ndarray, p1: np.ndarray, p2: np.ndarray, n: int = 30
+) -> np.ndarray:
+    t = np.linspace(0, 1, n)[:, None]
+    return (1 - t) ** 2 * p0 + 2 * (1 - t) * t * p1 + t**2 * p2
+
+
+def create_tube(
+    p0: np.ndarray,
+    p1: np.ndarray,
+    p2: np.ndarray,
+    radius: float,
+    color: list,
+    n: int = 30,
+) -> trimesh.Trimesh:
+    pts = sample_quadratic_bezier(p0, p1, p2, n)
+    circle = shapely.geometry.Point(0, 0).buffer(radius)
+    tube = trimesh.creation.sweep_polygon(circle, pts)
+    tube.visual.face_colors = color
+    return tube
+
+
+def create_arrow_head(
+    pt: np.ndarray,
+    drn: np.ndarray,
+    color: list,
+    radius: float = 0.05,
+    len: float = 0.25,
+) -> trimesh.Trimesh:
     head = trimesh.creation.cone(radius=radius, height=len)
     head.apply_translation(pt)
     head = align_cone_to_direction(head, drn, pt)
+    head.visual.face_colors = color
     return head
 
 
 def create_segmented_arrow(
-    p_start, p_mid, p_end, arrow_loc: ArrowHeadLoc, radius: float = 0.05
+    p_start,
+    p_mid,
+    p_end,
+    arrow_loc: ArrowHeadLoc,
+    radius: float = 0.02,
+    color: list = [255, 0, 0, 255],
 ):
-    """Creates a 3D arrow mesh composed of two segments and a head."""
-    # Convert points to numpy arrays
+    """Creates a 3D arrow mesh composed of a bezier tube and a cone head."""
     p_start = np.array(p_start, dtype=float)
     p_mid = np.array(p_mid, dtype=float)
     p_end = np.array(p_end, dtype=float)
-    print("hi")
 
-    points = np.array([p_start, p_mid, p_end])
-    print(points)
-    bezier = Bezier(points=[0, 1, 2], color=[255, 0, 0, 255])
-    print("hi2")
-
-    logger.debug(bezier)
-    print(bezier)
-    path = trimesh.path.Path3D(entities=[bezier], vertices=points)
+    tube = create_tube(p_start, p_mid, p_end, radius=radius, color=color)
 
     head_pt = p_start if arrow_loc == ArrowHeadLoc.START else p_end
     drn = compute_endpoint_direction(p_start, p_mid, p_end, arrow_loc)
-    arrow_head = create_arrow_head(head_pt, drn)
+    arrow_head = create_arrow_head(head_pt, drn, color=color, radius=radius * 2.5)
+
     scene = trimesh.Scene()
+    scene.add_geometry(tube)
     scene.add_geometry(arrow_head)
-    scene.add_geometry(path)
 
     logger.debug(scene)
-    scene.show()
+    # scene.show()
     return scene
