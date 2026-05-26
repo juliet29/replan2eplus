@@ -6,6 +6,7 @@ from omegaconf import OmegaConf
 
 from plan2eplus.ex.paths import ExamplePaths
 from plan2eplus.ezcase.ez import EZ
+from plan2eplus.viz3d.arrow_curve import ArrowHeadLoc, create_segmented_arrow
 from plan2eplus.viz3d.arrows import gather_data, make_case_arrows
 from plan2eplus.viz3d.obj_create import prep_to_obj
 from plan2eplus.ex.make import make_test_case
@@ -35,6 +36,10 @@ class StudyPaths:
 
 @app.command()
 def study_obj():
+    pts = [(1, 0, 1), (1, 1, 1), (0.5, 0.5, 1)]
+    scene = create_segmented_arrow(*pts, arrow_loc=ArrowHeadLoc.START)
+    print("hello!")
+    return scene
     obj = read_building(StudyPaths.case, StudyPaths.sql_path, StudyPaths.obj_path)
     return make_case_arrows(StudyPaths.case, StudyPaths.sql_path)
     return gather_data(StudyPaths.case, StudyPaths.sql_path, 12)
