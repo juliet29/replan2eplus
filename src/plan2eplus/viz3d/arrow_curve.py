@@ -74,16 +74,34 @@ def create_segmented_arrow(
     arrow_loc: ArrowHeadLoc,
     color: list = [255, 0, 0, 255],
     radius: float = 0.02,
+    head_pullback: float = 0.30,
+    tail_pullforward: float = 0.10,
 ):
     """Creates a 3D arrow mesh composed of a bezier tube and a cone head."""
     p_start = np.array(p_start, dtype=float)
     p_mid = np.array(p_mid, dtype=float)
     p_end = np.array(p_end, dtype=float)
 
-    tube = create_tube(p_start, p_mid, p_end, radius=radius, color=color)
-
-    head_pt = p_start if arrow_loc == ArrowHeadLoc.START else p_end
     drn = compute_endpoint_direction(p_start, p_mid, p_end, arrow_loc)
+    tail_drn = compute_endpoint_direction(
+        p_start,
+        p_mid,
+        p_end,
+        ArrowHeadLoc.START if arrow_loc == ArrowHeadLoc.END else ArrowHeadLoc.END,
+    )
+
+    if arrow_loc == ArrowHeadLoc.START:
+        tube_start = p_start - drn * head_pullback
+        tube_end = p_end - tail_drn * tail_pullforward
+    else:
+        tube_start = p_start - tail_drn * tail_pullforward
+        tube_end = p_end - drn * head_pullback
+
+    tube = create_tube(tube_start, p_mid, tube_end, radius=radius, color=color)
+
+    head_pt = (
+        p_start if arrow_loc == ArrowHeadLoc.START else p_end
+    ) - drn * head_pullback
     arrow_head = create_arrow_head(head_pt, drn, color=color, radius=radius * 2.5)
 
     scene = trimesh.Scene()

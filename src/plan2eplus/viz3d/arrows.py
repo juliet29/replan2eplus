@@ -55,7 +55,7 @@ def color_and_drn(
     color = cmap(norm_val)
     direction = ArrowHeadLoc(int(math.copysign(1, value)))
 
-    def remap(value, lo=0.02, hi=0.05):
+    def remap(value, lo=0.08, hi=0.15):
         return lo + (hi - lo) * value
 
     radius = remap(norm_val)
@@ -70,7 +70,7 @@ def color_and_drn(
 
 
 def make_cardinal_points(zones: list[Zone]):
-    cardinal_expansion_factor = 1.8
+    cardinal_expansion_factor = 1.4
     total_domain = compute_multidomain([i.domain for i in zones])
     cardinal_domain = expand_domain(total_domain, cardinal_expansion_factor)
     cardinal_points = calculate_cardinal_points(cardinal_domain)
