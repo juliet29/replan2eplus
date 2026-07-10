@@ -8,7 +8,7 @@ from plan2eplus.ex.afn import AFNEdgeGroups as AFNEdgeGroups
 from plan2eplus.io.details import get_details_from_yaml
 from plan2eplus.paths import BASE_PATH, ProjectPaths
 from plan2eplus.ep_paths import EpConfig
-from utils4plans.logconfig import logset
+from utils4plans.logs import logset
 
 app = App(name="studies")
 

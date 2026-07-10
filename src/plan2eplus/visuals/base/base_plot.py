@@ -142,9 +142,12 @@ class BasePlot:
 
         return self
 
-    def show(self):
+    def finalize(self):
         self.axes.set_xlim(self.extents.horz_range.as_tuple)
         self.axes.set_ylim(self.extents.vert_range.as_tuple)
         self.axes.legend()
+        return self
 
+    def show(self):
+        self.finalize()
         plt.show()

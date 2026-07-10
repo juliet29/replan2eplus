@@ -1,6 +1,6 @@
 from cyclopts import App
 from loguru import logger
-from utils4plans.logconfig import logset
+from utils4plans.logs import logset
 
 app = App()
 
