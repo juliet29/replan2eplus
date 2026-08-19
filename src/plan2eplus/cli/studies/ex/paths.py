@@ -1,8 +1,29 @@
-from plan2eplus.paths import BASE_PATH, StaticPaths
+from pathlib import Path
+
+from plan2eplus.paths import BASE_PATH
+
+
+class StaticPaths:
+    base = Path(BASE_PATH) / "static"
+    inputs = base / "_01_inputs"
+    plans = base / "_02_plans"
+    models = base / "_03_models"
+    temp = base / "_04_temp"
+    figures = base / "_05_figures"
+
+
+class InputConfigPaths:
+    base = StaticPaths.inputs / "test_configs"
+    edges = base / "edges.yaml"
+    details = base / "details.yaml"
+
+
+class ProjectPaths:
+    input_config = InputConfigPaths
+    pass
 
 
 class ExamplePaths:
-
     THROWAWAY_PATH = BASE_PATH / "throwaway"
     results_for_tests = StaticPaths.models / "results_for_tests"
     trials = StaticPaths.models / "trials"

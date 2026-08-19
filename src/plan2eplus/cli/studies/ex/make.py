@@ -3,7 +3,6 @@ from pathlib import Path
 from plan2eplus.cli.studies.ex.rooms import Rooms
 from plan2eplus.cli.studies.ex.subsurfaces import details
 
-from plan2eplus.eppaths.logic import EpPaths
 from plan2eplus.ezcase.ez import EZ
 from plan2eplus.ops.afn.user_interface import AFNInput
 from plan2eplus.ops.subsurfaces.interfaces import Edge
@@ -30,8 +29,6 @@ def make_test_case(
     if afn:
         case.add_airflow_network(afn_input)
     if output_path:
-        case.output_path = output_path
-    ep_paths = EpPaths()
-    case.epw_path = ep_paths.default_weather
+        case.run_settings.output_path = output_path
 
     return case

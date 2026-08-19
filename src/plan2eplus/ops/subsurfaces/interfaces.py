@@ -11,6 +11,9 @@ class ZoneDirectionEdge(NamedTuple):
     space_a: str
     space_b: WallNormal
 
+    # def __post_init__(self):
+    #     self.space
+
     @property
     def as_tuple(self):
         return (self.space_a, self.space_b)
@@ -92,10 +95,16 @@ class Edge(NamedTuple):
         return (self.space_a, self.space_b)
 
     @property
+    def as_upper_tuple(self):
+        return (self.space_a.upper(), self.space_b.upper())
+
+    @property
     def sorted_directed_edge(self):
         if self.is_directed_edge:
+            # make direction upper always
             zone, drn = sorted(
-                [self.space_a, self.space_b], key=lambda x: x in WallNormalNamesList
+                [self.space_a, self.space_b.upper()],
+                key=lambda x: x in WallNormalNamesList,
             )  # NOTE: order is (false=0, true=1)
             return (zone, WallNormal[drn])
         else:

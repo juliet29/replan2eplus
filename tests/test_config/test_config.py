@@ -1,22 +1,23 @@
-from plan2eplus.ep_paths import EpPaths
 from pathlib import Path
 
-DEV_PATH = Path("/Applications/EnergyPlus-22-2-0")
-PROD_PATH = Path("./static/_01_inputs/local_ep_files/")
+from omegaconf import OmegaConf
+
+from plan2eplus.eppaths.logic import EpPaths
+from plan2eplus.paths import Constants
+
+
+def expected_install_path(env: str):
+    config = OmegaConf.load(Constants.config_path / f"{env}.yaml")
+    return Path(config.path_to_ep_install)  # pyright: ignore[reportAttributeAccessIssue]
 
 
 def test_dev_ep_paths(monkeypatch):
-
     monkeypatch.setenv("APP_ENV", "dev")
     ep_paths = EpPaths()
-    assert ep_paths.config.path_to_ep_install == DEV_PATH
+    assert ep_paths.config.path_to_ep_install == expected_install_path("dev")
 
 
 def test_prod_ep_paths(monkeypatch):
     monkeypatch.setenv("APP_ENV", "prod")
     ep_paths = EpPaths()
-    assert ep_paths.config.path_to_ep_install == PROD_PATH
-
-
-if __name__ == "__main__":
-    pass
+    assert ep_paths.config.path_to_ep_install == expected_install_path("prod")

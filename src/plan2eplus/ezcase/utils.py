@@ -1,10 +1,9 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from eppy.modeleditor import IDDAlreadySetError
 from geomeppyupdated.idf import IDF
 
-from plan2eplus.io.files import get_or_make_folder_path
 from plan2eplus.ops.init.create import add_init_objects
 from plan2eplus.ops.run_settings.defaults import default_analysis_period
 from plan2eplus.ops.run_settings.user_interfaces import AnalysisPeriod
@@ -30,58 +29,28 @@ def initialize_idd(idd_path: Path):
         pass
 
 
-# TODO: should probably be in interfaces or something like this?
 @dataclass
-class RunVariablesInput:
-    # OUTPUTS
-    output_idf_path: Path | None = None
-    output_results_path: Path | None = None
-    output_schedules_path: Path | None = None
-    # INPUTS
+class RunSettings:
+    output_path: Path | None = None
     epw_path: Path | None = None
-    analysis_period: AnalysisPeriod | None = None
+    analysis_period: AnalysisPeriod = field(
+        default_factory=lambda: default_analysis_period
+    )
 
+    def output_root(self) -> Path:
+        assert (
+            self.output_path
+        ), "No output_path set on the case's run_settings - don't know where to write outputs."
+        return self.output_path
 
-@dataclass
-class RunVariablesOutput:
-    # OUTPUTS
-    output_idf_path: Path
-    output_results_path: Path
-    output_schedules_path: Path
-    # INPUTS
-    epw_path: Path
-    analysis_period: AnalysisPeriod
+    @property
+    def output_idf_path(self) -> Path:
+        return self.output_root() / Constants.idf_name
 
+    @property
+    def output_results_path(self) -> Path:
+        return self.output_root() / Constants.results_location
 
-def no_path_spec_message(name: str):
-    return f"No output path specified for {name} and not output_path specified for the case"
-
-
-def handle_run_variables(
-    v: RunVariablesInput, case_output_path: Path | None, default_weather_path: Path
-):
-    # NOTE: when using defaults, this function will take care of creating the directories if they dont already exist, for non-EnergyPlus writes. Otherwise, the calling function should take care of this.
-
-    if not v.output_idf_path:
-        assert case_output_path, no_path_spec_message("the IDF")
-        v.output_idf_path = case_output_path / Constants.idf_name
-
-    if not v.output_results_path:
-        assert case_output_path, no_path_spec_message("the results")
-        v.output_results_path = case_output_path / Constants.results_location
-
-    if not v.output_schedules_path:
-        assert case_output_path, no_path_spec_message("the schedules")
-        sched_path = case_output_path / Constants.schedule_location
-        get_or_make_folder_path(sched_path)
-        v.output_schedules_path = sched_path
-
-    # NOTE: not going to change Case variables when do the run..
-    if not v.epw_path:
-        v.epw_path = default_weather_path
-
-    # ANALYSIS PERIOD
-    if not v.analysis_period:
-        v.analysis_period = default_analysis_period
-
-    return RunVariablesOutput(**v.__dict__)
+    @property
+    def output_schedules_path(self) -> Path:
+        return self.output_root() / Constants.schedule_location

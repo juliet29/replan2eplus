@@ -3,19 +3,17 @@ from pathlib import Path
 from typing import Literal, NamedTuple
 
 from utils4plans.io import write_json
+from utils4plans.lists import chain_flatten
 from utils4plans.sets import set_intersection
 
-from plan2eplus.ops.subsurfaces.interfaces import Edge
-
-from utils4plans.lists import chain_flatten
 from plan2eplus.geometry.directions import WallNormalNamesList
-
 from plan2eplus.ops.subsurfaces.interfaces import (
     Dimension,
+    Edge,
     Location,
+    SubsurfaceType,
     ZoneDirectionEdge,
     ZoneEdge,
-    SubsurfaceType,
 )
 
 EdgeGroupType = Literal["Zone_Direction", "Zone_Zone"]
@@ -51,18 +49,18 @@ class EdgeGroup:
         for edge in self.edges:
             if self.type_ == "Zone_Direction":
                 assert (
-                    len(set_intersection(edge.as_tuple, WallNormalNamesList)) == 1
+                    len(set_intersection(edge.as_upper_tuple, WallNormalNamesList)) == 1
                 ), f"Invalid `Zone_Direction` Edge: {edge}"
             else:
                 assert (
-                    len(set_intersection(edge.as_tuple, WallNormalNamesList)) == 0
+                    len(set_intersection(edge.as_upper_tuple, WallNormalNamesList)) == 0
                 ), f"Invalid `Zone_Zone` Edge: {edge}"
 
     def write(self, path: Path):
         assert isinstance(self.detail, str)
         edges = list(map(lambda x: x.as_tuple, self.edges))
         data = {"edges": edges, "detail": self.detail, "type_": self.type_}
-        write_json(data, path, OVERWRITE=True)
+        write_json(data, path)
 
 
 @dataclass

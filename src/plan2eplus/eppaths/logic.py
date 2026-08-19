@@ -8,7 +8,7 @@ from rich.pretty import pretty_repr
 
 from plan2eplus.eppaths.defaults import EpConfig
 from plan2eplus.errors import InvalidPathError
-from plan2eplus.paths import BASE_PATH, CONFIG_PATH
+from plan2eplus.paths import Constants
 
 
 def handle_user_config(path: Path, schema):
@@ -43,17 +43,14 @@ def handle_default_configs(base_path: Path, schema):
 
 @dataclass
 class EpPaths:
-    base_path: Path = BASE_PATH / "epconfig"
+    base_path: Path = Constants.config_path
 
     def __post_init__(self):
         schema = OmegaConf.structured(EpConfig)
 
-        base_path = (
-            CONFIG_PATH  # TODO: make some sort of property when integrate with ezcase..
-        )
-        config = handle_user_config(base_path / "user.yaml", schema)
+        config = handle_user_config(self.base_path / "user.yaml", schema)
         if not config:
-            config = handle_default_configs(base_path, schema)
+            config = handle_default_configs(self.base_path, schema)
 
         self.config: EpConfig = OmegaConf.to_object(config)  # pyright: ignore[reportAttributeAccessIssue]
 

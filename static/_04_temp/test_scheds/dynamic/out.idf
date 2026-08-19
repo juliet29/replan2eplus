@@ -1,4 +1,4 @@
-!- Darwin Line endings 
+!- Linux Line endings 
 
 VERSION,
     22.2;                     !- Version Identifier
@@ -28,12 +28,12 @@ TIMESTEP,
 SITE:LOCATION,
     San Francisco Intl Ap,    !- Name
     37.62,                    !- Latitude
-    -8,                       !- Longitude
-    2,                        !- Time Zone
-    0;                        !- Elevation
+    -122.4,                   !- Longitude
+    -8,                       !- Time Zone
+    2;                        !- Elevation
 
 RUNPERIOD,
-    July_1,                   !- Name
+    Default_July_1,           !- Name
     7,                        !- Begin Month
     1,                        !- Begin Day of Month
     ,                         !- Begin Year
@@ -52,7 +52,7 @@ RUNPERIOD,
 SCHEDULE:FILE,
     AFN_Venting_Schedule_for_Doors.csv,    !- Name
     Venting,                  !- Schedule Type Limits Name
-    /Users/julietnwagwuume-ezeoke/_UILCode/gqe-phd/fpopt/plan2eplus/static/_04_temp/test_scheds/dynamic/schedules/AFN_Venting_Schedule_for_Doors.csv,    !- File Name
+    /home/groups/risheej/jnwagwu/fpopt/plan2eplus/static/_04_temp/test_scheds/dynamic/schedules/AFN_Venting_Schedule_for_Doors.csv,    !- File Name
     1,                        !- Column Number
     1,                        !- Rows to Skip at Top
     8760,                     !- Number of Hours of Data
@@ -580,8 +580,7 @@ AIRFLOWNETWORK:SIMULATIONCONTROL,
     1,                        !- Ratio of Building Width Along Short Axis to Width Along Long Axis
     No,                       !- Height Dependence of External Node Temperature
     SkylineLU,                !- Solver
-    No,                       !- Allow Unsupported Zone Equipment
-    No;                       !- Do Distribution Duct Sizing Calculation
+    No;                       !- Allow Unsupported Zone Equipment
 
 AIRFLOWNETWORK:MULTIZONE:ZONE,
     Block `room1` Storey 0,    !- Zone Name

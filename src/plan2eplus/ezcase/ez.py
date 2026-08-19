@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from loguru import logger
@@ -6,11 +6,11 @@ from loguru import logger
 from plan2eplus.eppaths.logic import EpPaths
 from plan2eplus.ezcase.objects import read_existing_objects
 from plan2eplus.ezcase.utils import (
-    RunVariablesInput,
-    handle_run_variables,
+    RunSettings,
     initialize_idd,
     open_idf,
 )
+from plan2eplus.io.files import get_or_make_folder_path
 from plan2eplus.ops.afn.create import create_afn_objects
 from plan2eplus.ops.afn.user_interface import AFNInput
 from plan2eplus.ops.airboundary.create import update_airboundary_constructions
@@ -21,7 +21,6 @@ from plan2eplus.ops.constructions.user_interface import (
 )
 from plan2eplus.ops.output.create import add_output_variables
 from plan2eplus.ops.run_settings.user_interfaces import (
-    AnalysisPeriod,
     write_run_period_and_location,
 )
 from plan2eplus.ops.schedules.create import create_schedules
@@ -32,22 +31,27 @@ from plan2eplus.ops.subsurfaces.interfaces import (
 from plan2eplus.ops.subsurfaces.user_interfaces import SubsurfaceInputs
 from plan2eplus.ops.zones.create import create_zones
 from plan2eplus.ops.zones.user_interface import Room
-from plan2eplus.paths import BASE_PATH
+from plan2eplus.paths import Constants
 
 
 @dataclass
 class EZ:
     idf_path: Path | None = None
-    output_path: Path | None = None  # TODO: shouldnt need output path anymore..
-    epw_path: Path | None = None
-    analysis_period: AnalysisPeriod | None = None
     read_existing: bool = True
-    config_path: Path = BASE_PATH / "epconfig"
+    config_path: Path = Constants.config_path
+    run_settings: RunSettings = field(default_factory=RunSettings)
 
     def __post_init__(self):
-        print("Initializing EzCase.. ")
+        logger.info("Initializing EzCase.. ")
+        if not self.config_path.exists():
+            raise Exception(
+                f"Could not find the path to config: {self.config_path}. Please ensure this is well-defined to enable finding the EnergyPlus installation"
+            )
 
         self.ep_paths = EpPaths(self.config_path)
+        if self.run_settings.epw_path is None:
+            self.run_settings.epw_path = self.ep_paths.default_weather
+
         initialize_idd(self.ep_paths.idd_path)
         self.idf = open_idf(self.idf_path)
         self.objects = read_existing_objects(self.idf, self.read_existing)
@@ -70,7 +74,9 @@ class EZ:
         )
         return self
 
-    def add_airflow_network(self, afn_input: AFNInput = AFNInput()):
+    def add_airflow_network(self, afn_input: AFNInput | None = None):
+        if afn_input is None:
+            afn_input = AFNInput()
         self.objects.airflow_network = create_afn_objects(
             self.idf,
             self.objects.zones,
@@ -99,38 +105,41 @@ class EZ:
 
     def save_and_run(
         self,
-        run_vars: RunVariablesInput = RunVariablesInput(),
         output_path: Path | None = None,
         additional_variables: list[str] = [],
         run=False,
         save=True,
     ):
-        op = output_path if output_path else self.output_path
-        vars = handle_run_variables(
-            run_vars, op, default_weather_path=self.ep_paths.default_weather
-        )
-        logger.debug(vars)
+        if output_path:
+            self.run_settings.output_path = output_path
+        settings = self.run_settings
+        logger.debug(settings)
 
-        write_run_period_and_location(self.idf, vars.analysis_period, vars.epw_path)
+        assert settings.epw_path
+        write_run_period_and_location(
+            self.idf, settings.analysis_period, settings.epw_path
+        )
 
         add_output_variables(self.idf, additional_variables)
 
+        if save or run:
+            get_or_make_folder_path(settings.output_root())
+
         if self.objects.schedules:
+            get_or_make_folder_path(settings.output_schedules_path)
             create_schedules(
-                self.idf, self.objects.schedules, vars.output_schedules_path
+                self.idf, self.objects.schedules, settings.output_schedules_path
             )
 
         if save:
-            # NOTE: cannot change epw at this point and expect it to be saved..
-            # TODO: add a check of this..
-            self.idf.saveas(vars.output_idf_path)
+            self.idf.saveas(settings.output_idf_path)
 
         if run:
             if not self.idf_path:
-                self.idf.idfabsname = vars.output_idf_path
-            self.idf.epw = vars.epw_path
-            # TODO: figure out why it is nessecary to set the weather again when it was not needed before..
+                self.idf.idfabsname = settings.output_idf_path
+            self.idf.epw = settings.epw_path
             self.idf.run(
-                output_directory=vars.output_results_path, weather=vars.epw_path
+                output_directory=settings.output_results_path,
+                weather=settings.epw_path,
             )
             # touch the schedules path..

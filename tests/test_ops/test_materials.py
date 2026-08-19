@@ -9,7 +9,7 @@ from plan2eplus.ops.materials.utils import (
     read_materials,
     read_materials_from_many_idf,
 )
-from plan2eplus.ep_paths import ep_paths
+from plan2eplus.eppaths.logic import EpPaths
 
 
 def test_read_material_of_type_a_from_idf():
@@ -32,6 +32,7 @@ def test_read_materials_from_idf_by_name():
 
 def test_read_many_materials_from_many_idfs():
     materials = Interfaces.materials.materials_across_idfs
+    ep_paths = EpPaths()
     found_materials = read_materials_from_many_idf(ep_paths.material_idfs, materials)
     assert set_equality(get_names_of_idf_objects(found_materials), materials)
 

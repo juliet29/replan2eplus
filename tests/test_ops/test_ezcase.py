@@ -13,7 +13,7 @@ from plan2eplus.cli.studies.ex.schedule import ExampleYear
 from plan2eplus.results.sql import get_qoi
 import numpy as np
 from plan2eplus.paths import Constants
-from utils4plans.logconfig import logset
+from utils4plans.logs import logset
 
 
 @pytest.mark.slow

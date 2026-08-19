@@ -16,7 +16,7 @@ from plan2eplus.ops.constructions.utils import (
 )
 from plan2eplus.ops.subsurfaces.create import read_subsurfaces
 from plan2eplus.ops.surfaces.idfobject import IDFSurface
-from plan2eplus.ep_paths import ep_paths
+from plan2eplus.eppaths.logic import EpPaths
 
 
 def test_read_constructions():
@@ -51,6 +51,7 @@ def test_read_material_based_on_construction():
 
 def test_read_construction_across_idfs():
     names = Interfaces.constructions.constructions_across_idfs
+    ep_paths = EpPaths()
     found_constructions = read_constructions_by_name_from_many_idfs(
         ep_paths.construction_idfs, names
     )
@@ -60,6 +61,7 @@ def test_read_construction_across_idfs():
 
 def test_read_constructions_and_materials_across_idfs():
     const_names = Interfaces.constructions.constructions_across_idfs
+    ep_paths = EpPaths()
     results = read_constructions_and_assoc_materials(
         ep_paths.construction_idfs, ep_paths.material_idfs, const_names
     )
@@ -88,6 +90,7 @@ def test_write_constructions():
 
 def test_write_ep_construction_set():
     case = Cases().subsurfaces_simple
+    ep_paths = EpPaths()
     create_constructions(
         case.idf,
         ep_paths.construction_idfs,
