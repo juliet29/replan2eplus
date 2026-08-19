@@ -8,7 +8,7 @@ from rich.pretty import pretty_repr
 
 from plan2eplus.eppaths.defaults import EpConfig
 from plan2eplus.errors import InvalidPathError
-from plan2eplus.paths import CONFIG_PATH
+from plan2eplus.paths import BASE_PATH, CONFIG_PATH
 
 
 def handle_user_config(path: Path, schema):
@@ -38,8 +38,13 @@ def handle_default_configs(base_path: Path, schema):
     return config
 
 
+# BASE_PATH = pyprojroot.find_root(pyprojroot.has_dir(".git"))
+
+
 @dataclass
 class EpPaths:
+    base_path: Path = BASE_PATH / "epconfig"
+
     def __post_init__(self):
         schema = OmegaConf.structured(EpConfig)
 

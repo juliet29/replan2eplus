@@ -1,8 +1,9 @@
-from plan2eplus.ex.materials import ConstructionExamples, MaterialExamples
-from plan2eplus.ex.rooms import Rooms
-from plan2eplus.ex.subsurfaces import SubsurfaceInputExamples
+from plan2eplus.cli.studies.ex.materials import ConstructionExamples, MaterialExamples
+from plan2eplus.cli.studies.ex.rooms import Rooms
+from plan2eplus.cli.studies.ex.subsurfaces import SubsurfaceInputExamples
+
+from plan2eplus.eppaths.logic import EpPaths
 from plan2eplus.ezcase.ez import EZ
-from plan2eplus.ep_paths import ep_paths
 
 
 # hellpp//
@@ -17,6 +18,7 @@ class Interfaces:
 class EpAFNCase:
     # NOTE: draw back of this case is that it uses ONLY fenestration subsurfaces -> not ideal since this code avoids this.. reasonable enough for enough for materials though
     name = "AirflowNetwork3zVent.idf"
+    ep_paths = EpPaths()
     path = ep_paths.example_files / name
     # case = EZ(path)
     basic_material_names = [
@@ -45,6 +47,7 @@ class EpAFNCase:
 
 class EpFourZoneCase:
     name = "4ZoneWithShading_Simple_2.idf"
+    ep_paths = EpPaths()
     path = ep_paths.example_files / name
     # case = EZ(path)
 

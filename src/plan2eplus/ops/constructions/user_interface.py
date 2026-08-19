@@ -1,10 +1,11 @@
-from typing import NamedTuple
 from pathlib import Path
+from typing import NamedTuple
+
+from plan2eplus.eppaths.logic import EpPaths
 from plan2eplus.ops.constructions.interfaces import (
     BaseConstructionSet,
     EPConstructionSet,
 )
-from plan2eplus.ep_paths import ep_paths
 
 
 class ConstructionInput(NamedTuple):
@@ -13,6 +14,7 @@ class ConstructionInput(NamedTuple):
     construction_set: EPConstructionSet
 
 
+# TODO: move all defaults right next to ezcase
 default_construction_set = EPConstructionSet(
     # interior then exterior
     # TODO should be able to specify a tuple, and just one object if its the same.., trim white space
@@ -23,8 +25,10 @@ default_construction_set = EPConstructionSet(
     door=BaseConstructionSet("Medium Furnishings", "Medium Furnishings"),
 )  # TODO -> could one quicly change the names of these?
 
-default_construction_input = ConstructionInput(
-    ep_paths.construction_idfs,
-    ep_paths.material_idfs,
-    default_construction_set,
-)
+
+def default_construction_input(ep_paths: EpPaths):
+    return ConstructionInput(
+        ep_paths.construction_idfs,
+        ep_paths.material_idfs,
+        default_construction_set,
+    )

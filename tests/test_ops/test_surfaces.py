@@ -1,4 +1,4 @@
-from plan2eplus.ex.main import Cases
+from plan2eplus.cli.studies.ex.main import Cases
 from plan2eplus.ops.surfaces.idfobject import IDFSurface
 
 from rich import print

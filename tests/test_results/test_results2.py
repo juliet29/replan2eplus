@@ -1,8 +1,8 @@
 from plan2eplus.results.sql import create_result_for_qoi, get_sql_results
 from plan2eplus.ezcase.ez import EZ
-from plan2eplus.ex.paths import ExamplePaths
+from plan2eplus.cli.studies.ex.paths import ExamplePaths
 from rich import print
-from plan2eplus.ex.afn import AFNExampleCases, AFNCaseDefinition
+from plan2eplus.cli.studies.ex.afn import AFNExampleCases, AFNCaseDefinition
 from plan2eplus.paths import Constants
 
 

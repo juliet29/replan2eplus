@@ -1,7 +1,7 @@
 import pytest
 
-from plan2eplus.ex.main import Cases
-from plan2eplus.ex.main import Interfaces as UI
+from plan2eplus.cli.studies.ex.main import Cases
+from plan2eplus.cli.studies.ex.main import Interfaces as UI
 
 from plan2eplus.ops.base import get_names_of_idf_objects
 from plan2eplus.ops.zones.create import create_zones

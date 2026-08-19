@@ -13,7 +13,7 @@ from plan2eplus.ops.subsurfaces.user_interfaces import (
     EdgeGroup,
     SubsurfaceInputs,
 )
-from plan2eplus.ex.rooms import Rooms
+from plan2eplus.cli.studies.ex.rooms import Rooms
 
 FACTOR = 4
 

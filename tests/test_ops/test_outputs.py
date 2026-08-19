@@ -1,5 +1,5 @@
 from utils4plans.sets import set_intersection
-from plan2eplus.ex.main import Cases
+from plan2eplus.cli.studies.ex.main import Cases
 from plan2eplus.ops.output.defaults import default_variables
 from plan2eplus.ops.output.create import add_output_variables
 from plan2eplus.ops.output.idfobject import IDFOutputVariable

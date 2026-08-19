@@ -3,6 +3,7 @@ from pathlib import Path
 
 from loguru import logger
 
+from plan2eplus.eppaths.logic import EpPaths
 from plan2eplus.ezcase.objects import read_existing_objects
 from plan2eplus.ezcase.utils import (
     RunVariablesInput,
@@ -31,6 +32,7 @@ from plan2eplus.ops.subsurfaces.interfaces import (
 from plan2eplus.ops.subsurfaces.user_interfaces import SubsurfaceInputs
 from plan2eplus.ops.zones.create import create_zones
 from plan2eplus.ops.zones.user_interface import Room
+from plan2eplus.paths import BASE_PATH
 
 
 @dataclass
@@ -40,10 +42,13 @@ class EZ:
     epw_path: Path | None = None
     analysis_period: AnalysisPeriod | None = None
     read_existing: bool = True
+    config_path: Path = BASE_PATH / "epconfig"
 
     def __post_init__(self):
         print("Initializing EzCase.. ")
-        initialize_idd()
+
+        self.ep_paths = EpPaths(self.config_path)
+        initialize_idd(self.ep_paths.idd_path)
         self.idf = open_idf(self.idf_path)
         self.objects = read_existing_objects(self.idf, self.read_existing)
 
@@ -77,12 +82,11 @@ class EZ:
 
     def add_constructions(
         self,
-        construction_inputs: ConstructionInput = default_construction_input,  # TODO decide if the name will be singular or plural, also should the defaults be this high up? -> BUILD CONSTRUCTIONS INTO THE OBJECT!
+        construction_inputs: ConstructionInput | None = None,
     ):
-        # TODO have a default construction set
-        cpaths, mpaths, cset = (
-            construction_inputs  # TODO: add construction inputs to function definition
-        )
+        if not construction_inputs:
+            construction_inputs = default_construction_input(self.ep_paths)
+        cpaths, mpaths, cset = construction_inputs
         create_constructions(
             self.idf,
             cpaths,
@@ -102,8 +106,9 @@ class EZ:
         save=True,
     ):
         op = output_path if output_path else self.output_path
-        vars = handle_run_variables(run_vars, op)
-        # TODO: write tests for different combos of variables
+        vars = handle_run_variables(
+            run_vars, op, default_weather_path=self.ep_paths.default_weather
+        )
         logger.debug(vars)
 
         write_run_period_and_location(self.idf, vars.analysis_period, vars.epw_path)

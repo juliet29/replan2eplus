@@ -1,7 +1,7 @@
 from geomeppyupdated import IDF
 from utils4plans.sets import set_equality
 
-from plan2eplus.ex.main import Cases, EpAFNCase, Interfaces
+from plan2eplus.cli.studies.ex.main import Cases, EpAFNCase, Interfaces
 from plan2eplus.ezcase.ez import EZ
 from plan2eplus.ops.base import get_names_of_idf_objects
 from plan2eplus.ops.materials.idfobject import IDFMaterial

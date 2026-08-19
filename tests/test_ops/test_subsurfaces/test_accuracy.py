@@ -1,15 +1,15 @@
 import pytest
 from rich import print
 
-from plan2eplus.ex.main import Cases
-from plan2eplus.ex.rooms import Rooms
+from plan2eplus.cli.studies.ex.main import Cases
+from plan2eplus.cli.studies.ex.rooms import Rooms
 from plan2eplus.geometry.directions import WallNormalLiteral
 from plan2eplus.geometry.domain import Domain
 from plan2eplus.geometry.plane import Plane
 from plan2eplus.geometry.range import Range
 
 # from plan2eplus.examples.cases.minimal import get_minimal_case_with_rooms
-# from plan2eplus.ex.subsurfaces import (
+# from plan2eplus.cli.studies.ex.subsurfaces import (
 #     Rooms.r1,
 #     Rooms.r2,
 # )

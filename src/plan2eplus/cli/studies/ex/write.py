@@ -1,10 +1,10 @@
-from plan2eplus.ex.afn import AFNExampleCases
-from plan2eplus.ex.make import make_test_case, airboundary_edges
-from plan2eplus.ex.subsurfaces import (
+from plan2eplus.cli.studies.ex.afn import AFNExampleCases
+from plan2eplus.cli.studies.ex.make import make_test_case, airboundary_edges
+from plan2eplus.cli.studies.ex.subsurfaces import (
     SubsurfaceInputOutput,
     SubsurfaceInputOutputExamples,
 )
-from plan2eplus.ex.paths import ExamplePaths
+from plan2eplus.cli.studies.ex.paths import ExamplePaths
 
 
 def write_subsurface_cases_to_file(example: SubsurfaceInputOutput):

@@ -1,9 +1,9 @@
-from plan2eplus.ex.afn import AFNExampleCases, AFNCaseDefinition
+from plan2eplus.cli.studies.ex.afn import AFNExampleCases, AFNCaseDefinition
 from plan2eplus.ezcase.ez import EZ
-from plan2eplus.ex.paths import ExamplePaths
+from plan2eplus.cli.studies.ex.paths import ExamplePaths
 from plan2eplus.paths import Constants
 
-from plan2eplus.ex.main import Interfaces
+from plan2eplus.cli.studies.ex.main import Interfaces
 from plan2eplus.ops.afn.logic import (
     check_surfaces_for_nbs,
     determine_afn_objects,

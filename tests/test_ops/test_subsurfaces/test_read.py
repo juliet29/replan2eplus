@@ -1,8 +1,8 @@
 import pytest
 from plan2eplus.ezcase.ez import EZ
 from plan2eplus.ops.subsurfaces.idfobject import read_subsurfaces
-from plan2eplus.ex.paths import ExamplePaths
-from plan2eplus.ex.subsurfaces import (
+from plan2eplus.cli.studies.ex.paths import ExamplePaths
+from plan2eplus.cli.studies.ex.subsurfaces import (
     SubsurfaceInputOutput,
     SubsurfaceInputOutputExamples,
 )

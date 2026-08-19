@@ -5,7 +5,7 @@ from plan2eplus.geometry.contact_points import calculate_cardinal_points
 from plan2eplus.visuals.transforms import (
     subsurface_to_connection_line,
 )
-from plan2eplus.ex.subsurfaces import e0
+from plan2eplus.cli.studies.ex.subsurfaces import e0
 
 pytest.skip(allow_module_level=True)
 

@@ -1,15 +1,15 @@
 import pytest
 
-from plan2eplus.ex.afn import AFNEdgeGroups as AFNEdgeGroups, AFNExampleCases
-from plan2eplus.ex.make import make_test_case
-from plan2eplus.ex.make import airboundary_edges
+from plan2eplus.cli.studies.ex.afn import AFNEdgeGroups as AFNEdgeGroups, AFNExampleCases
+from plan2eplus.cli.studies.ex.make import make_test_case
+from plan2eplus.cli.studies.ex.make import airboundary_edges
 
 from plan2eplus.ezcase.ez import EZ
 from plan2eplus.ops.afn.create import AFNInput
 from plan2eplus.ops.afn.utils.venting import AFNVentingInput
 from plan2eplus.ops.schedules.interfaces.year import create_year_from_single_value
-from plan2eplus.ex.paths import ExamplePaths
-from plan2eplus.ex.schedule import ExampleYear
+from plan2eplus.cli.studies.ex.paths import ExamplePaths
+from plan2eplus.cli.studies.ex.schedule import ExampleYear
 from plan2eplus.results.sql import get_qoi
 import numpy as np
 from plan2eplus.paths import Constants

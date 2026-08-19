@@ -1,7 +1,7 @@
 import pytest
 
-from plan2eplus.ex.main import Cases, Interfaces
-from plan2eplus.ex.subsurfaces import (
+from plan2eplus.cli.studies.ex.main import Cases, Interfaces
+from plan2eplus.cli.studies.ex.subsurfaces import (
     door_details,
     window_details,
     zone_drn_edge,

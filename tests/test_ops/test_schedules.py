@@ -18,7 +18,7 @@ from plan2eplus.ops.schedules.interfaces.year import (
     initialize_year_array,
     update_year_arr,
 )
-from plan2eplus.ex.schedule import ExampleYear
+from plan2eplus.cli.studies.ex.schedule import ExampleYear
 
 
 # TODO put into a class as well?

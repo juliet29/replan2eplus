@@ -1,14 +1,14 @@
 import pytest
 from plan2eplus.errors import IDFMisunderstandingError
-from plan2eplus.ex.subsurfaces import SubsurfaceInputOutputExamples, e0, zone_edge
+from plan2eplus.cli.studies.ex.subsurfaces import SubsurfaceInputOutputExamples, e0, zone_edge
 from plan2eplus.ezcase.ez import EZ
 from plan2eplus.ops.airboundary.create import update_airboundary_constructions
 from plan2eplus.ops.subsurfaces.logic.interior import (
     create_subsurface_for_interior_edge,
 )
-from plan2eplus.ex.subsurfaces import door_details
-from plan2eplus.ex.main import Cases
-from plan2eplus.ex.paths import ExamplePaths
+from plan2eplus.cli.studies.ex.subsurfaces import door_details
+from plan2eplus.cli.studies.ex.main import Cases
+from plan2eplus.cli.studies.ex.paths import ExamplePaths
 from plan2eplus.paths import Constants
 
 

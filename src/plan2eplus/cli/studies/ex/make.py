@@ -1,12 +1,13 @@
 from pathlib import Path
 
-from plan2eplus.ex.rooms import Rooms
-from plan2eplus.ex.subsurfaces import details
+from plan2eplus.cli.studies.ex.rooms import Rooms
+from plan2eplus.cli.studies.ex.subsurfaces import details
+
+from plan2eplus.eppaths.logic import EpPaths
 from plan2eplus.ezcase.ez import EZ
 from plan2eplus.ops.afn.user_interface import AFNInput
 from plan2eplus.ops.subsurfaces.interfaces import Edge
 from plan2eplus.ops.subsurfaces.user_interfaces import EdgeGroup, SubsurfaceInputs
-from plan2eplus.ep_paths import ep_paths
 
 r1, r2 = Rooms().two_room_list
 airboundary_edges = [Edge(r1.name, r2.name)]
@@ -30,6 +31,7 @@ def make_test_case(
         case.add_airflow_network(afn_input)
     if output_path:
         case.output_path = output_path
+    ep_paths = EpPaths()
     case.epw_path = ep_paths.default_weather
 
     return case

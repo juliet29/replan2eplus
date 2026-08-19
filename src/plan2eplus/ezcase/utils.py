@@ -4,7 +4,6 @@ from pathlib import Path
 from eppy.modeleditor import IDDAlreadySetError
 from geomeppyupdated.idf import IDF
 
-from plan2eplus.ep_paths import ep_paths
 from plan2eplus.io.files import get_or_make_folder_path
 from plan2eplus.ops.init.create import add_init_objects
 from plan2eplus.ops.run_settings.defaults import default_analysis_period
@@ -24,9 +23,9 @@ def open_idf(idf_path: Path | None = None):
     return idf
 
 
-def initialize_idd():
+def initialize_idd(idd_path: Path):
     try:
-        IDF.setiddname(ep_paths.idd_path)
+        IDF.setiddname(idd_path)
     except IDDAlreadySetError:
         pass
 
@@ -59,8 +58,7 @@ def no_path_spec_message(name: str):
 
 
 def handle_run_variables(
-    v: RunVariablesInput,
-    case_output_path: Path | None,
+    v: RunVariablesInput, case_output_path: Path | None, default_weather_path: Path
 ):
     # NOTE: when using defaults, this function will take care of creating the directories if they dont already exist, for non-EnergyPlus writes. Otherwise, the calling function should take care of this.
 
@@ -80,7 +78,7 @@ def handle_run_variables(
 
     # NOTE: not going to change Case variables when do the run..
     if not v.epw_path:
-        v.epw_path = ep_paths.default_weather
+        v.epw_path = default_weather_path
 
     # ANALYSIS PERIOD
     if not v.analysis_period:

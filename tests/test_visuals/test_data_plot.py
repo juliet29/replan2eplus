@@ -1,9 +1,9 @@
 from plan2eplus.visuals.simple_plots import make_pressure_plot
 from plan2eplus.visuals.data.data_plot import handle_external_node_data
-from plan2eplus.ex.paths import ExamplePaths
+from plan2eplus.cli.studies.ex.paths import ExamplePaths
 
 from plan2eplus.paths import Constants
-from plan2eplus.ex.afn import AFNExampleCases
+from plan2eplus.cli.studies.ex.afn import AFNExampleCases
 
 from plan2eplus.results.sql import get_qoi
 

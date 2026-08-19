@@ -1,10 +1,10 @@
 from typing import NamedTuple
 
-from plan2eplus.ex.rooms import Rooms
+from plan2eplus.cli.studies.ex.rooms import Rooms
 from plan2eplus.ezcase.ez import EZ
 from plan2eplus.ops.subsurfaces.user_interfaces import EdgeGroup, SubsurfaceInputs
 from dataclasses import dataclass
-from plan2eplus.ex.subsurfaces import details
+from plan2eplus.cli.studies.ex.subsurfaces import details
 
 
 r1 = Rooms.r1.name

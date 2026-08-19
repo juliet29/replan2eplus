@@ -3,8 +3,8 @@ from rich import print
 from utils4plans.lists import chain_flatten
 from utils4plans.sets import set_equality
 
-from plan2eplus.ex.main import Cases, EpAFNCase, Interfaces
-from plan2eplus.ex.materials import SAMPLE_CONSTRUCTION_SET
+from plan2eplus.cli.studies.ex.main import Cases, EpAFNCase, Interfaces
+from plan2eplus.cli.studies.ex.materials import SAMPLE_CONSTRUCTION_SET
 from plan2eplus.ezcase.ez import EZ
 from plan2eplus.ops.base import get_names_of_idf_objects
 from plan2eplus.ops.constructions.create import create_constructions

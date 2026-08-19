@@ -1,6 +1,6 @@
 from plan2eplus.campaigns.decorator2 import DataDict
 from plan2eplus.examples.cases.minimal import test_rooms
-from plan2eplus.ex.subsurfaces import edge_groups
+from plan2eplus.cli.studies.ex.subsurfaces import edge_groups
 
 from plan2eplus.ops.subsurfaces.interfaces import Dimension
 

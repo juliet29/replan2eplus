@@ -1,6 +1,6 @@
-from plan2eplus.ex.afn import AFNEdgeGroups as AFNEdgeGroups
+from plan2eplus.cli.studies.ex.afn import AFNEdgeGroups as AFNEdgeGroups
 
-from plan2eplus.ex.make import make_test_case
+from plan2eplus.cli.studies.ex.make import make_test_case
 from plan2eplus.visuals.simple_plots import make_base_plot
 
 
