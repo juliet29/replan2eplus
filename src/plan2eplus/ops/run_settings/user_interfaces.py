@@ -28,7 +28,9 @@ class EPW:
         epw = LBEPW(self.path)
         loc = epw.location
 
-        return IDFLocation(loc.city, loc.latitude, loc.time_zone, loc.elevation)
+        return IDFLocation(
+            loc.city, loc.latitude, loc.longitude, loc.time_zone, loc.elevation
+        )
 
 
 def write_run_period_and_location(

@@ -1,10 +1,10 @@
-from plan2eplus.errors import BadlyFormatedIDFError, IDFMisunderstandingError
-from plan2eplus.ops.surfaces.ezobject import Surface
-from plan2eplus.ops.subsurfaces.interfaces import ZoneDirectionEdge
-from plan2eplus.ops.zones.ezobject import Zone
-from plan2eplus.ops.subsurfaces.interfaces import ZoneEdge
-from loguru import logger
 import rich
+from loguru import logger
+
+from plan2eplus.errors import BadlyFormatedIDFError, IDFMisunderstandingError
+from plan2eplus.ops.subsurfaces.interfaces import ZoneDirectionEdge, ZoneEdge
+from plan2eplus.ops.surfaces.ezobject import Surface
+from plan2eplus.ops.zones.ezobject import Zone
 
 
 def keep_rich():
@@ -21,7 +21,7 @@ def get_zones_by_plan_name(room_name: str, zones: list[Zone]):
     return candidates[0]
 
 
-def get_surface_between_zones(edge: ZoneEdge, zones: list[Zone]):
+def get_surface_between_zones(edge: ZoneEdge, zones: list[Zone], index: int = 0):
     zone_a = get_zones_by_plan_name(edge.space_a, zones)
     zone_b = get_zones_by_plan_name(edge.space_b, zones)
 
@@ -36,16 +36,21 @@ def get_surface_between_zones(edge: ZoneEdge, zones: list[Zone]):
         raise IDFMisunderstandingError(
             f"Could not find any surfaces between zones. {zone_a.zone_name} and {zone_b.zone_name} may not be neighbors!"
         )
+    if index >= len(candidates):
+        raise IDFMisunderstandingError(
+            f"Requested shared wall #{index} between {zone_a.zone_name} and "
+            f"{zone_b.zone_name}, but they share only {len(candidates)} wall(s)."
+        )
     if len(candidates) > 1:
         candidate_names = [i.surface_name for i in candidates]
         logger.warning(
-            f"Should not have more than one shared wall between zones. Between {zone_a.zone_name} and {zone_b.zone_name}, have {len(candidates)} shared walls: `{candidate_names}`. Choosing {candidate_names[0]}"
+            f"More than one shared wall between {zone_a.zone_name} and {zone_b.zone_name}: {len(candidates)} shared walls `{candidate_names}`. Choosing #{index}: {candidate_names[index]}"
         )
-    surf = candidates[0]
+    surf = candidates[index]
     assert surf.neighbor_name
-    neigbor = [i for i in zone_b.surfaces if i.surface_name == surf.neighbor_name]
-    assert len(neigbor) == 1
-    return surf, neigbor[0]
+    neighbor = [i for i in zone_b.surfaces if i.surface_name == surf.neighbor_name]
+    assert len(neighbor) == 1
+    return surf, neighbor[0]
 
 
 def get_surface_between_zone_and_direction(edge: ZoneDirectionEdge, zones: list[Zone]):

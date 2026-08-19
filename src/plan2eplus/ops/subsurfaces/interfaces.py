@@ -1,7 +1,8 @@
-from plan2eplus.geometry.directions import WallNormal, WallNormalNamesList
-from plan2eplus.geometry.contact_points import CardinalEntries, CornerEntries
-from plan2eplus.geometry.nonant import NonantEntries
 from typing import Callable, Literal, NamedTuple, Union
+
+from plan2eplus.geometry.contact_points import CardinalEntries, CornerEntries
+from plan2eplus.geometry.directions import WallNormal, WallNormalNamesList
+from plan2eplus.geometry.nonant import NonantEntries
 
 
 class ZoneDirectionEdge(NamedTuple):
@@ -20,6 +21,7 @@ class ZoneEdge(NamedTuple):
 
     space_a: str
     space_b: str
+    index: int = 0
 
     @property
     def as_tuple(self):
@@ -65,18 +67,10 @@ SubsurfaceKey = Literal[
 ]
 
 
-# subsurface_options = [
-#     "DOOR",
-#     "WINDOW",
-#     "DOOR:INTERZONE",
-# ]  # TODO arg thing since now have literal..
-
-# display_map = {"DOOR": "Door", "WINDOW": "Window", "DOOR:INTERZONE": "Door"}
-
-
 class Edge(NamedTuple):
     space_a: str
     space_b: str
+    index: int = 0
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Edge):

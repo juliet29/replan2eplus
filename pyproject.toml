@@ -45,13 +45,11 @@ build-backend = "uv_build"
 dev = ["zensical>=0.0.38"]
 
 [tool.uv]
-override-dependencies = [
-    "click>=8.1.7",
-]
+override-dependencies = ["click>=8.1.7"]
 
 [tool.uv.sources]
 utils4plans = { path = "../utils4plans", editable = true }
 
 [project.scripts]
 p2ep = "plan2eplus.cli.main:main"
-p2ep-studies = "plan2eplus.cli.studies:main"
+p2eps = "plan2eplus.cli.studies._study:main"

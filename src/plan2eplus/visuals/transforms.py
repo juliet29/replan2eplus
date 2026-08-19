@@ -83,7 +83,7 @@ def subsurface_to_connection_line(
     zones: list[Zone],
     cardinal_coords: CardinalPoints,
 ):
-    space_a, space_b = edge
+    space_a, space_b = edge.space_a, edge.space_b
 
     middle_coord = Coord(*domain_to_line(domain).centroid)
 

@@ -1,9 +1,9 @@
 from geomeppyupdated import IDF
-from rich.pretty import pretty_repr
 from loguru import logger
+from rich.pretty import pretty_repr
 
 from plan2eplus.errors import BadlyFormatedIDFError, IDFMisunderstandingError
-from plan2eplus.ops.surfaces.utils import update_surface_relations
+from plan2eplus.ops.subsurfaces.idfobject import read_subsurfaces
 from plan2eplus.ops.subsurfaces.logic.exterior import (
     create_subsurface_for_exterior_edge,
 )
@@ -13,8 +13,8 @@ from plan2eplus.ops.subsurfaces.logic.interior import (
 )
 from plan2eplus.ops.subsurfaces.user_interfaces import SubsurfaceInputs
 from plan2eplus.ops.surfaces.ezobject import Surface
+from plan2eplus.ops.surfaces.utils import update_surface_relations
 from plan2eplus.ops.zones.ezobject import Zone
-from plan2eplus.ops.subsurfaces.idfobject import read_subsurfaces
 
 
 def create_subsurfaces(
@@ -50,7 +50,7 @@ def create_subsurfaces(
                 )
             except IDFMisunderstandingError as e:
                 logger.warning(
-                    f"Could not make intereior surfaces for {edge.as_tuple} due to {e}"
+                    f"Could not make interior surfaces for {edge.as_tuple} due to {e}"
                 )
                 continue
             except SurfaceMatchException as e:

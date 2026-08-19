@@ -1,35 +1,34 @@
 from dataclasses import dataclass
-from loguru import logger
 from pathlib import Path
 
-from plan2eplus.ops.afn.user_interface import AFNInput
-from plan2eplus.ops.output.create import add_output_variables
-from plan2eplus.ops.run_settings.user_interfaces import (
-    AnalysisPeriod,
-    write_run_period_and_location,
-)
-from plan2eplus.ops.schedules.create import create_schedules
-from plan2eplus.ezcase.objects import read_existing_objects
+from loguru import logger
 
+from plan2eplus.ezcase.objects import read_existing_objects
 from plan2eplus.ezcase.utils import (
     RunVariablesInput,
     handle_run_variables,
     initialize_idd,
     open_idf,
 )
+from plan2eplus.ops.afn.create import create_afn_objects
+from plan2eplus.ops.afn.user_interface import AFNInput
+from plan2eplus.ops.airboundary.create import update_airboundary_constructions
 from plan2eplus.ops.constructions.create import create_constructions
 from plan2eplus.ops.constructions.user_interface import (
     ConstructionInput,
     default_construction_input,
 )
+from plan2eplus.ops.output.create import add_output_variables
+from plan2eplus.ops.run_settings.user_interfaces import (
+    AnalysisPeriod,
+    write_run_period_and_location,
+)
+from plan2eplus.ops.schedules.create import create_schedules
 from plan2eplus.ops.subsurfaces.create import create_subsurfaces
 from plan2eplus.ops.subsurfaces.interfaces import (
     Edge,
 )
 from plan2eplus.ops.subsurfaces.user_interfaces import SubsurfaceInputs
-
-from plan2eplus.ops.airboundary.create import update_airboundary_constructions
-from plan2eplus.ops.afn.create import create_afn_objects
 from plan2eplus.ops.zones.create import create_zones
 from plan2eplus.ops.zones.user_interface import Room
 
@@ -43,6 +42,7 @@ class EZ:
     read_existing: bool = True
 
     def __post_init__(self):
+        print("Initializing EzCase.. ")
         initialize_idd()
         self.idf = open_idf(self.idf_path)
         self.objects = read_existing_objects(self.idf, self.read_existing)

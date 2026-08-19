@@ -61,7 +61,7 @@ def create_subsurface_for_interior_edge(
     surfaces: list[Surface],
     idf: IDF,
 ) -> tuple[Subsurface, Subsurface]:
-    main_surface, nb_surface = get_surface_between_zones(edge, zones)
+    main_surface, nb_surface = get_surface_between_zones(edge, zones, edge.index)
 
     with logger.contextualize(s1=main_surface.display_name, s2=nb_surface.display_name):
         if main_surface.domain != nb_surface.domain:
